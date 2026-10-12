@@ -20,12 +20,12 @@ class CoreHelper {
     
     var headers: HTTPHeaders {
         [
-            "Authorization": "Bearer \(apiKey)",
-            "Content-Type": "application/json"
+            "apikey": apiKey,
+            "Accept": "application/json"
         ]
     }
     
     func configureURL(endpoint: String) -> String {
-        "\(baseURL)\(version)\(endpoint)"
+        baseURL + version + "/" + endpoint
     }
 }
