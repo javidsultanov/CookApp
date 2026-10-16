@@ -13,7 +13,7 @@ class DiscoverController: BaseController {
         super.viewDidLoad()
     }
     
-    override func confugureUI() {
+    override func configureUI() {
         navigationItem.title = "Discover"
     }
 }

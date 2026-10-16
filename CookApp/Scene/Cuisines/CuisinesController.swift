@@ -13,7 +13,7 @@ class CuisinesController: BaseController {
         super.viewDidLoad()
     }
     
-    override func confugureUI() {
+    override func configureUI() {
         navigationItem.title = "Cuisines"
     }
 }

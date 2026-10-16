@@ -18,7 +18,21 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         // This delegate does not imply the connecting scene or session are new (see `application:configurationForConnectingSceneSession` instead).
         guard let windowScene = (scene as? UIWindowScene) else { return }
         window = UIWindow(windowScene: windowScene)
+        if UserDefaultsHelper.shared.hasSeenOnboarding {
+            setHomeAsRoot()
+        } else {
+            setOnboardingAsRoot()
+        }
+    }
+    
+    func setHomeAsRoot() {
         window?.rootViewController = TabBarController()
+        window?.makeKeyAndVisible()
+    }
+    
+    func setOnboardingAsRoot() {
+        let navigation = UINavigationController(rootViewController: OnboardingController())
+        window?.rootViewController = navigation
         window?.makeKeyAndVisible()
     }
 
