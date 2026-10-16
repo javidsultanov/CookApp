@@ -13,12 +13,12 @@ class BaseController: UIViewController {
         super.viewDidLoad()
         view.backgroundColor = UIColor(red: 251/255, green: 244/255, blue: 234/255, alpha: 1)
         
-        confugureUI()
+        configureUI()
         configureConstraints()
         configureViewModel()
     }
     
-    func confugureUI() {}
+    func configureUI() {}
     
     func configureConstraints() {}
     
