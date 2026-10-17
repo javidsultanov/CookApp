@@ -31,6 +31,7 @@ class CoreManager {
             case .failure(let error):
                 let errorMessage = error.localizedDescription
                 completion(nil, errorMessage)
+                print(errorMessage)
             }
         }
     }
