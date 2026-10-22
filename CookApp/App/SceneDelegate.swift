@@ -31,8 +31,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     }
     
     func setOnboardingAsRoot() {
-        let navigation = UINavigationController(rootViewController: OnboardingController())
-        window?.rootViewController = navigation
+        window?.rootViewController = OnboardingController()
         window?.makeKeyAndVisible()
     }
 
