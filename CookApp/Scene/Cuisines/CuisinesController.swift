@@ -40,7 +40,7 @@ class CuisinesController: BaseController {
         NSLayoutConstraint.activate([
             collection.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
             collection.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-            collection.widthAnchor.constraint(equalTo: view.widthAnchor, multiplier: 0.92),
+            collection.widthAnchor.constraint(equalTo: view.widthAnchor, multiplier: 0.96),
             collection.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor)
         ])
     }
@@ -77,5 +77,13 @@ extension CuisinesController: CollectionConfiguration {
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         let width = (collectionView.frame.width - 24) / 2
         return .init(width: width, height: 180)
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        guard let navigationController = self.navigationController else { return }
+        
+        let coordinator = CuisineRecipesCoordinator(navigationController: navigationController,
+                                                    cuisine: viewModel.cuisines[indexPath.item])
+        coordinator.start()
     }
 }
