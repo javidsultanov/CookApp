@@ -13,6 +13,8 @@ extension UIColor {
     // WelcomeCell
     // SelectCuisineCell
     // JourneyFeaturesCell
+    // CuisineCardCell
+    // CategoryCell
     static let atlasOrange = UIColor(red: 236/255, green: 111/255, blue: 26/255, alpha: 1)
     
     // WelcomeCell
@@ -20,17 +22,30 @@ extension UIColor {
     // SelectCuisineCell
     // JourneyCell
     // JourneyFeaturesCell
+    // CuisineCardCell
+    // CuisineRecipesController
+    // CuisineRecipesCell
+    // CategoryCell
+    // IngredientsCell
     static let atlasDark = UIColor(red: 42/255, green: 31/255, blue: 23/255, alpha: 1)
     
     // WelcomeCell
     // CuisinesCell
     // JourneyCell
     // JourneyFeaturesCell
+    // CuisineCardCell
+    // CuisineRecipesController
+    // CuisineRecipesCell
+    // DifficultyHeader
+    // IngredientsCell
     static let atlasGray = UIColor(red: 110/255, green: 96/255, blue: 84/255, alpha: 1)
     
     // WelcomeCell
     // SelectCuisineCell
     // JourneyFeaturesCell
+    // CuisineCardCell
+    // CuisineRecipesController
+    // CuisineRecipesCell
     static let atlasPeach = UIColor(red: 253/255, green: 230/255, blue: 209/255, alpha: 1)
     
     // OnboardingController
