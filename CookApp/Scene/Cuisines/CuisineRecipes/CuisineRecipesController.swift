@@ -70,6 +70,7 @@ class CuisineRecipesController: BaseController {
     
     override func configureUI() {
         navigationItem.title = viewModel.cuisine.name
+        view.backgroundColor = .atlasCream
         
         cuisineImageView.loadImage(url: viewModel.cuisine.imageURL ?? "")
         nameLabel.text = "\(viewModel.cuisine.flagEmoji ?? "") \(viewModel.cuisine.name ?? "")"

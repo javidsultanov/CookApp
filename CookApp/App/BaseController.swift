@@ -11,7 +11,6 @@ class BaseController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        view.backgroundColor = .atlasCream
         
         configureUI()
         configureConstraints()

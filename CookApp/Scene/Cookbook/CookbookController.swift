@@ -15,5 +15,6 @@ class CookbookController: BaseController {
     
     override func configureUI() {
         navigationItem.title = "Cookbook"
+        view.backgroundColor = .atlasCream
     }
 }

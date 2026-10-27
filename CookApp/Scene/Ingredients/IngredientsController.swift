@@ -44,6 +44,7 @@ class IngredientsController: BaseController {
     
     override func configureUI() {
         navigationItem.title = "Ingredients"
+        view.backgroundColor = .atlasCream
         
         let tap = UITapGestureRecognizer(target: self, action: #selector(dismissKeyboard))
         tap.cancelsTouchesInView = false

@@ -52,6 +52,10 @@ class OnboardingController: BaseController {
         super.viewDidLoad()
     }
     
+    override func configureUI() {
+        view.backgroundColor = .atlasCream
+    }
+    
     override func configureConstraints() {
         view.addSubview(pageControl)
         view.addSubview(collection)
