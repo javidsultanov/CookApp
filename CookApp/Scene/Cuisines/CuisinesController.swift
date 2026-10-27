@@ -32,6 +32,7 @@ class CuisinesController: BaseController {
     
     override func configureUI() {
         navigationItem.title = "World Cuisines"
+        view.backgroundColor = .atlasCream
     }
     
     override func configureConstraints() {
