@@ -73,7 +73,7 @@ class CuisineRecipesCell: UICollectionViewCell {
         recipeImageView.loadImage(url: data.imageURL ?? "")
         
         titleLabel.text = data.title
-        infoLabel.text = "\(data.category ?? "") · \(data.cookTimeMinutes ?? 0) min · \(data.ingredientCount ?? 0) ingredients"
+        infoLabel.text = "\(data.category ?? "") · \(data.cookTimeMinutes ?? 0) minutes · \(data.ingredientCount ?? 0) ingredients"
     }
     
     required init?(coder: NSCoder) {
