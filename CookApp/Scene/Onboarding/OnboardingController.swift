@@ -10,8 +10,8 @@ import UIKit
 class OnboardingController: BaseController {
     private lazy var pageControl: UIPageControl = {
         let page = UIPageControl()
-        page.currentPageIndicatorTintColor = UIColor(red: 236/255, green: 111/255, blue: 26/255, alpha: 1)
-        page.pageIndicatorTintColor = UIColor(red: 233/255, green: 216/255, blue: 198/255, alpha: 1)
+        page.currentPageIndicatorTintColor = .atlasOrange
+        page.pageIndicatorTintColor = .atlasSand
         page.addTarget(self, action: #selector(pageControllTapped), for: .valueChanged)
         page.translatesAutoresizingMaskIntoConstraints = false
         return page
@@ -39,7 +39,7 @@ class OnboardingController: BaseController {
         let button = UIButton()
         button.setTitleColor(.white, for: .normal)
         button.titleLabel?.font = UIFont.systemFont(ofSize: 16, weight: .bold)
-        button.backgroundColor = UIColor(red: 236/255, green: 111/255, blue: 26/255, alpha: 1)
+        button.backgroundColor = .atlasOrange
         button.layer.cornerRadius = 16
         button.addTarget(self, action: #selector(buttonTapped), for: .touchUpInside)
         button.translatesAutoresizingMaskIntoConstraints = false
@@ -50,6 +50,10 @@ class OnboardingController: BaseController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+    }
+    
+    override func configureUI() {
+        view.backgroundColor = .atlasCream
     }
     
     override func configureConstraints() {
@@ -99,12 +103,14 @@ class OnboardingController: BaseController {
     }
     
     private func configureOnboading() {
-        pageControl.currentPage = viewModel.currentIndex
-        
         collection.scrollToItem(at: IndexPath(item: viewModel.currentIndex, section: 0),
                                 at: .centeredHorizontally,
                                 animated: true)
-        
+        updatePage()
+    }
+    
+    private func updatePage() {
+        pageControl.currentPage = viewModel.currentIndex
         button.setTitle(viewModel.buttonText, for: .normal)
     }
     
@@ -176,7 +182,6 @@ extension OnboardingController: CollectionConfiguration {
     
     func scrollViewDidEndDecelerating(_ scrollView: UIScrollView) {
         viewModel.currentIndex = Int(scrollView.contentOffset.x / scrollView.frame.width)
-        pageControl.currentPage = viewModel.currentIndex
-        button.setTitle(viewModel.buttonText, for: .normal)
+        updatePage()
     }
 }

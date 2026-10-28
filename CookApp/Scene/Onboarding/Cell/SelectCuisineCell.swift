@@ -12,7 +12,7 @@ class SelectCuisineCell: UICollectionViewCell {
         let image = UIImageView()
         image.contentMode = .scaleAspectFill
         image.clipsToBounds = true
-        image.backgroundColor = UIColor(red: 253/255, green: 230/255, blue: 209/255, alpha: 1)
+        image.backgroundColor = .atlasPeach
         image.translatesAutoresizingMaskIntoConstraints = false
         return image
     }()
@@ -26,7 +26,7 @@ class SelectCuisineCell: UICollectionViewCell {
     
     private lazy var nameLabel: UILabel = {
         let label = UILabel()
-        label.textColor = UIColor(red: 42/255, green: 31/255, blue: 23/255, alpha: 1)
+        label.textColor = .atlasDark
         label.font = UIFont.systemFont(ofSize: 16, weight: .bold)
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
@@ -52,7 +52,7 @@ class SelectCuisineCell: UICollectionViewCell {
         contentView.backgroundColor = .systemBackground
         contentView.layer.cornerRadius = 20
         contentView.clipsToBounds = true
-        contentView.layer.borderColor = UIColor(red: 236/255, green: 111/255, blue: 26/255, alpha: 1).cgColor
+        contentView.layer.borderColor = UIColor.atlasOrange.cgColor
     }
     
     private func configureConstraints() {
@@ -89,9 +89,7 @@ class SelectCuisineCell: UICollectionViewCell {
         
         contentView.layer.borderWidth = selected ? 2 : 0
         checkmarkImageView.image = UIImage(systemName: selected ? "checkmark.circle.fill" : "circle")
-        checkmarkImageView.tintColor = selected ?
-        UIColor(red: 236/255, green: 111/255, blue: 26/255, alpha: 1) :
-        UIColor(red: 233/255, green: 216/255, blue: 198/255, alpha: 1)
+        checkmarkImageView.tintColor = selected ? .atlasOrange : .atlasSand
     }
     
     required init?(coder: NSCoder) {

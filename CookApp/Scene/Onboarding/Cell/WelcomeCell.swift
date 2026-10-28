@@ -10,7 +10,7 @@ import UIKit
 class WelcomeCell: UICollectionViewCell {
     private lazy var emojiView: UIView = {
         let view = UIView()
-        view.backgroundColor = UIColor(red: 253/255, green: 230/255, blue: 209/255, alpha: 1)
+        view.backgroundColor = .atlasPeach
         view.translatesAutoresizingMaskIntoConstraints = false
         return view
     }()
@@ -28,10 +28,10 @@ class WelcomeCell: UICollectionViewCell {
         let label = UILabel()
         let attributedText = NSMutableAttributedString(string: "CookAtlas")
         attributedText.addAttribute(.foregroundColor,
-                                    value: UIColor(red: 42/255, green: 31/255, blue: 23/255, alpha: 1),
+                                    value: UIColor.atlasDark,
                                     range: NSRange(location: 0, length: 4))
         attributedText.addAttribute(.foregroundColor,
-                                    value: UIColor(red: 236/255, green: 111/255, blue: 26/255, alpha: 1),
+                                    value: UIColor.atlasOrange,
                                     range: NSRange(location: 4, length: 5))
         
         label.attributedText = attributedText
@@ -43,7 +43,7 @@ class WelcomeCell: UICollectionViewCell {
     private lazy var subTitleLabel: UILabel = {
         let label = UILabel()
         label.text = "WORLD CUISINES & RECIPES"
-        label.textColor = UIColor(red: 236/255, green: 111/255, blue: 26/255, alpha: 1)
+        label.textColor = .atlasOrange
         label.font = UIFont.systemFont(ofSize: 12, weight: .bold)
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
@@ -52,7 +52,7 @@ class WelcomeCell: UICollectionViewCell {
     private lazy var descriptionLabel: UILabel = {
         let label = UILabel()
         label.text = "Saw a dish you'd love to try? Find the recipe, check the ingredients and cook it at home, step by step."
-        label.textColor = UIColor(red: 110/255, green: 96/255, blue: 84/255, alpha: 1)
+        label.textColor = .atlasGray
         label.font = UIFont.systemFont(ofSize: 16, weight: .regular)
         label.numberOfLines = 0
         label.translatesAutoresizingMaskIntoConstraints = false
