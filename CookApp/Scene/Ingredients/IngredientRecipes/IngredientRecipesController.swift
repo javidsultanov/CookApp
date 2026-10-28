@@ -11,7 +11,7 @@ class IngredientRecipesController: BaseController {
     private lazy var collection: UICollectionView = {
         let layout = UICollectionViewFlowLayout()
         layout.minimumLineSpacing = 12
-        layout.sectionInset = .init(top: 0, left: 0, bottom: 20, right: 0)
+        layout.sectionInset = .init(top: 0, left: 0, bottom: 16, right: 0)
         
         let collection = UICollectionView(frame: .zero, collectionViewLayout: layout)
         collection.register(CuisineRecipesCell.self, forCellWithReuseIdentifier: CuisineRecipesCell.identifier)

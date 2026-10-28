@@ -68,12 +68,17 @@ class CuisineRecipesCell: UICollectionViewCell {
         ])
     }
     
-    func configure(data: RecipeCard) {
+    func configure(data: RecipeCard, showCuisine: Bool = false) {
         recipeImageView.image = nil
         recipeImageView.loadImage(url: data.imageURL ?? "")
         
         titleLabel.text = data.title
-        infoLabel.text = "\(data.category ?? "") · \(data.cookTimeMinutes ?? 0) minutes · \(data.ingredientCount ?? 0) ingredients"
+        
+        if showCuisine {
+            infoLabel.text = "\(data.flagEmoji ?? "") \(data.cuisineName ?? "") · \(data.cookTimeMinutes ?? 0) minutes · \(data.ingredientCount ?? 0) ingredients"
+        } else {
+            infoLabel.text = "\(data.category ?? "") · \(data.cookTimeMinutes ?? 0) minutes · \(data.ingredientCount ?? 0) ingredients"
+        }
     }
     
     required init?(coder: NSCoder) {
