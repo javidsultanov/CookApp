@@ -12,7 +12,7 @@ class CuisinesController: BaseController {
         let layout = UICollectionViewFlowLayout()
         layout.minimumLineSpacing = 12
         layout.minimumInteritemSpacing = 12
-        layout.sectionInset = .init(top: 0, left: 0, bottom: 24, right: 0)
+        layout.sectionInset = .init(top: 0, left: 0, bottom: 16, right: 0)
         
         let collection = UICollectionView(frame: .zero, collectionViewLayout: layout)
         collection.register(CuisineCardCell.self, forCellWithReuseIdentifier: CuisineCardCell.identifier)
