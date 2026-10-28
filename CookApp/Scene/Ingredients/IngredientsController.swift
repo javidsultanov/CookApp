@@ -124,6 +124,14 @@ extension IngredientsController: CollectionConfiguration {
         let width = (collectionView.frame.width - 16) / 3
         return .init(width: width, height: 160)
     }
+    
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        guard let navigationController = self.navigationController else { return }
+        
+        let coordinator = IngredientRecipesCoordinator(navigationController: navigationController,
+                                                       ingredient: viewModel.filteredIngredients[indexPath.item])
+        coordinator.start()
+    }
 }
 
 extension IngredientsController: UISearchBarDelegate {
