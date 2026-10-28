@@ -9,4 +9,5 @@ import Foundation
 
 protocol RecipeManagerUseCase {
     func getCuisineRecipes(id: Int, completion: @escaping([RecipeCard]?, String?) -> Void)
+    func getRecipes(cuisinesID: [Int], completion: @escaping([RecipeCard]?, String?) -> Void)
 }
