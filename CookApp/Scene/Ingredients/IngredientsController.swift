@@ -21,7 +21,7 @@ class IngredientsController: BaseController {
         let layout = UICollectionViewFlowLayout()
         layout.minimumLineSpacing = 8
         layout.minimumInteritemSpacing = 8
-        layout.sectionInset = .init(top: 0, left: 0, bottom: 12, right: 0)
+        layout.sectionInset = .init(top: 0, left: 0, bottom: 16, right: 0)
         
         let collection = UICollectionView(frame: .zero, collectionViewLayout: layout)
         collection.register(IngredientsCell.self, forCellWithReuseIdentifier: IngredientsCell.identifier)
