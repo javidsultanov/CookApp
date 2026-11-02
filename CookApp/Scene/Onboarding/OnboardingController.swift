@@ -23,9 +23,9 @@ class OnboardingController: BaseController {
         layout.minimumLineSpacing = 0
         
         let collection = UICollectionView(frame: .zero, collectionViewLayout: layout)
-        collection.register(WelcomeCell.self, forCellWithReuseIdentifier: WelcomeCell.identifier)
-        collection.register(CuisinesCell.self, forCellWithReuseIdentifier: CuisinesCell.identifier)
-        collection.register(JourneyCell.self, forCellWithReuseIdentifier: JourneyCell.identifier)
+        collection.register(WelcomeCell.self, forCellWithReuseIdentifier: "\(WelcomeCell.self)")
+        collection.register(CuisinesCell.self, forCellWithReuseIdentifier: "\(CuisinesCell.self)")
+        collection.register(JourneyCell.self, forCellWithReuseIdentifier: "\(JourneyCell.self)")
         collection.delegate = self
         collection.dataSource = self
         collection.backgroundColor = .clear
@@ -133,14 +133,14 @@ extension OnboardingController: CollectionConfiguration {
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         switch indexPath.item {
         case 0:
-        guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: WelcomeCell.identifier,
+        guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "\(WelcomeCell.self)",
                                                                 for: indexPath) as? WelcomeCell else {
             return UICollectionViewCell()
             }
             
             return cell
         case 1:
-            guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: CuisinesCell.identifier,
+            guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "\(CuisinesCell.self)",
                                                                 for: indexPath) as? CuisinesCell else {
                 return UICollectionViewCell()
             }
@@ -160,7 +160,7 @@ extension OnboardingController: CollectionConfiguration {
             
             return cell
         default:
-            guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: JourneyCell.identifier,
+            guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "\(JourneyCell.self)",
                                                                 for: indexPath) as? JourneyCell else {
                 return UICollectionViewCell()
             }

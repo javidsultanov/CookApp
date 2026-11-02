@@ -34,7 +34,7 @@ class CuisinesCell: UICollectionViewCell {
         layout.minimumInteritemSpacing = 12
         
         let collection = UICollectionView(frame: .zero, collectionViewLayout: layout)
-        collection.register(SelectCuisineCell.self, forCellWithReuseIdentifier: SelectCuisineCell.identifier)
+        collection.register(SelectCuisineCell.self, forCellWithReuseIdentifier: "\(SelectCuisineCell.self)")
         collection.delegate = self
         collection.dataSource = self
         collection.backgroundColor = .clear
@@ -56,9 +56,7 @@ class CuisinesCell: UICollectionViewCell {
     
     private var items: [Cuisine] = []
     private var selectedID: [Int] = []
-    
-    static let identifier = "CuisinesCell"
-    
+        
     override init(frame: CGRect) {
         super.init(frame: frame)
         
@@ -109,7 +107,7 @@ extension CuisinesCell: CollectionConfiguration {
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: SelectCuisineCell.identifier,
+        guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "\(SelectCuisineCell.self)",
                                                             for: indexPath) as? SelectCuisineCell else {
             return UICollectionViewCell()
         }
