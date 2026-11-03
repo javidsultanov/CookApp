@@ -18,6 +18,7 @@ class IngredientRecipesController: BaseController {
         collection.delegate = self
         collection.dataSource = self
         collection.backgroundColor = .clear
+        collection.showsVerticalScrollIndicator = false
         collection.translatesAutoresizingMaskIntoConstraints = false
         return collection
     }()

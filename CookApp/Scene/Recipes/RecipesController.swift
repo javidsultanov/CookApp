@@ -8,8 +8,6 @@
 import UIKit
 
 class RecipesController: BaseController {
-<<<<<<< Updated upstream
-=======
     private lazy var collection: UICollectionView = {
         let layout = UICollectionViewFlowLayout()
         layout.minimumLineSpacing = 12
@@ -23,12 +21,12 @@ class RecipesController: BaseController {
         collection.delegate = self
         collection.dataSource = self
         collection.backgroundColor = .clear
+        collection.showsVerticalScrollIndicator = false
         collection.translatesAutoresizingMaskIntoConstraints = false
         return collection
     }()
     
     private let viewModel = RecipesViewModel()
->>>>>>> Stashed changes
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -41,8 +39,6 @@ class RecipesController: BaseController {
     
     override func configureUI() {
         navigationItem.title = "Recipes"
-<<<<<<< Updated upstream
-=======
         view.backgroundColor = .atlasCream
     }
     
@@ -111,6 +107,5 @@ extension RecipesController: CollectionConfiguration {
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         .init(width: collectionView.frame.width, height: 96)
->>>>>>> Stashed changes
     }
 }

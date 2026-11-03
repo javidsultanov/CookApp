@@ -1,17 +1,17 @@
 //
-//  JourneyCell.swift
+//  CuisinesCell.swift
 //  CookApp
 //
-//  Created by Javid Sultanov on 16.10.26.
+//  Created by Javid Sultanov on 15.10.26.
 //
 
 import UIKit
 
-class JourneyCell: UICollectionViewCell {
+class CuisinesCell: UICollectionViewCell {
     private lazy var titleLabel: UILabel = {
         let label = UILabel()
-        label.text = "Your cooking journey"
-        label.textColor = UIColor(red: 42/255, green: 31/255, blue: 23/255, alpha: 1)
+        label.text = "Which cuisines do you love?"
+        label.textColor = .atlasDark
         label.font = UIFont.systemFont(ofSize: 32, weight: .bold)
         label.numberOfLines = 0
         label.translatesAutoresizingMaskIntoConstraints = false
@@ -20,43 +20,42 @@ class JourneyCell: UICollectionViewCell {
     
     private lazy var descriptionLabel: UILabel = {
         let label = UILabel()
-        label.text = "Everything you need from \"that looks good\" to \"I made it\"."
-        label.textColor = UIColor(red: 110/255, green: 96/255, blue: 84/255, alpha: 1)
+        label.text = "Pick a few. We'll show recipes from them first. You can change this anytime in Settings."
+        label.textColor = .atlasGray
         label.font = UIFont.systemFont(ofSize: 16, weight: .regular)
         label.numberOfLines = 0
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
     
-    private lazy var collection: UICollectionView = {
+    private lazy var collectionView: UICollectionView = {
         let layout = UICollectionViewFlowLayout()
         layout.minimumLineSpacing = 12
+        layout.minimumInteritemSpacing = 12
         
         let collection = UICollectionView(frame: .zero, collectionViewLayout: layout)
-        collection.register(JourneyFeaturesCell.self, forCellWithReuseIdentifier: "\(JourneyFeaturesCell.self)")
+        collection.register(SelectCuisineCell.self, forCellWithReuseIdentifier: "\(SelectCuisineCell.self)")
         collection.delegate = self
         collection.dataSource = self
         collection.backgroundColor = .clear
+        collection.showsVerticalScrollIndicator = false
         collection.translatesAutoresizingMaskIntoConstraints = false
         return collection
     }()
     
-    private lazy var footnoteLabel: UILabel = {
+    private lazy var countLabel: UILabel = {
         let label = UILabel()
-        label.text = """
-            No account needed. Your data stays on this iPhone.
-            
-            Developed by CC · (Cool Coding programs)
-            """
-        label.textColor = UIColor(red: 110/255, green: 96/255, blue: 84/255, alpha: 1)
+        label.textColor = .atlasGray
         label.font = UIFont.systemFont(ofSize: 12, weight: .regular)
         label.textAlignment = .center
-        label.numberOfLines = 0
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
     
-    private var features: [Feature] = []
+    var selectCallback: ((Int) -> Void)?
+    
+    private var items: [Cuisine] = []
+    private var selectedID: [Int] = []
         
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -67,33 +66,34 @@ class JourneyCell: UICollectionViewCell {
     private func configureConstraints() {
         contentView.addSubview(titleLabel)
         contentView.addSubview(descriptionLabel)
-        contentView.addSubview(collection)
-        contentView.addSubview(footnoteLabel)
+        contentView.addSubview(collectionView)
+        contentView.addSubview(countLabel)
         
         NSLayoutConstraint.activate([
             titleLabel.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 8),
             titleLabel.centerXAnchor.constraint(equalTo: contentView.centerXAnchor),
             titleLabel.widthAnchor.constraint(equalTo: contentView.widthAnchor, multiplier: 0.88),
             
-            descriptionLabel.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: 8),
+            descriptionLabel.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: 12),
             descriptionLabel.leadingAnchor.constraint(equalTo: titleLabel.leadingAnchor),
             descriptionLabel.trailingAnchor.constraint(equalTo: titleLabel.trailingAnchor),
             
-            collection.topAnchor.constraint(equalTo: descriptionLabel.bottomAnchor, constant: 20),
-            collection.leadingAnchor.constraint(equalTo: descriptionLabel.leadingAnchor),
-            collection.trailingAnchor.constraint(equalTo: descriptionLabel.trailingAnchor),
-            collection.heightAnchor.constraint(equalTo: contentView.heightAnchor, multiplier: 0.56),
+            collectionView.topAnchor.constraint(equalTo: descriptionLabel.bottomAnchor, constant: 16),
+            collectionView.leadingAnchor.constraint(equalTo: descriptionLabel.leadingAnchor),
+            collectionView.trailingAnchor.constraint(equalTo: descriptionLabel.trailingAnchor),
+            collectionView.bottomAnchor.constraint(equalTo: countLabel.topAnchor, constant: -12),
             
-            footnoteLabel.topAnchor.constraint(equalTo: collection.bottomAnchor, constant: 20),
-            footnoteLabel.leadingAnchor.constraint(equalTo: collection.leadingAnchor),
-            footnoteLabel.trailingAnchor.constraint(equalTo: collection.trailingAnchor),
-            
+            countLabel.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -20),
+            countLabel.leadingAnchor.constraint(equalTo: collectionView.leadingAnchor),
+            countLabel.trailingAnchor.constraint(equalTo: collectionView.trailingAnchor)
         ])
     }
     
-    func configure(features: [Feature]) {
-        self.features = features
-        collection.reloadData()
+    func configure(items: [Cuisine], selectedID: [Int], countText: String) {
+        self.items = items
+        self.selectedID = selectedID
+        countLabel.text = countText
+        collectionView.reloadData()
     }
     
     required init?(coder: NSCoder) {
@@ -101,22 +101,27 @@ class JourneyCell: UICollectionViewCell {
     }
 }
 
-extension JourneyCell: CollectionConfiguration {
+extension CuisinesCell: CollectionConfiguration {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        features.count
+        items.count
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "\(JourneyFeaturesCell.self)",
-                                                            for: indexPath) as? JourneyFeaturesCell else {
+        guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "\(SelectCuisineCell.self)",
+                                                            for: indexPath) as? SelectCuisineCell else {
             return UICollectionViewCell()
         }
         
-        cell.configure(data: features[indexPath.item])
+        cell.configure(data: items[indexPath.item], selected: selectedID.contains(items[indexPath.item].id ?? 0))
         return cell
     }
     
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        selectCallback?(indexPath.item)
+    }
+    
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        .init(width: collectionView.frame.width, height: 100)
+        let width = (collectionView.frame.width - 12) / 2
+        return .init(width: width, height: 132)
     }
 }
