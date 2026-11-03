@@ -40,9 +40,7 @@ class JourneyFeaturesCell: UICollectionViewCell {
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
-    
-    static let identifier = "JourneyFeaturesCell"
-    
+        
     override init(frame: CGRect) {
         super.init(frame: frame)
         

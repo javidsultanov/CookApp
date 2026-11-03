@@ -44,9 +44,7 @@ class CuisineCardCell: UICollectionViewCell {
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
-    
-    static let identifier = "CuisineCardCell"
-    
+        
     override init(frame: CGRect) {
         super.init(frame: frame)
         
