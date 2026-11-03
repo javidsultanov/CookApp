@@ -8,8 +8,6 @@
 import UIKit
 
 class IngredientsController: BaseController {
-<<<<<<< Updated upstream
-=======
     private lazy var searchBar: UISearchBar = {
         let search = UISearchBar()
         search.placeholder = "Find an Ingredient"
@@ -33,12 +31,12 @@ class IngredientsController: BaseController {
         collection.delegate = self
         collection.dataSource = self
         collection.backgroundColor = .clear
+        collection.showsVerticalScrollIndicator = false
         collection.translatesAutoresizingMaskIntoConstraints = false
         return collection
     }()
     
     private let viewModel = IngredientsViewModel()
->>>>>>> Stashed changes
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -46,8 +44,6 @@ class IngredientsController: BaseController {
     
     override func configureUI() {
         navigationItem.title = "Ingredients"
-<<<<<<< Updated upstream
-=======
         view.backgroundColor = .atlasCream
         
         let tap = UITapGestureRecognizer(target: self, action: #selector(dismissKeyboard))
@@ -147,6 +143,5 @@ extension IngredientsController: UISearchBarDelegate {
     
     func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
         searchBar.resignFirstResponder()
->>>>>>> Stashed changes
     }
 }

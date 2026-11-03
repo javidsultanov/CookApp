@@ -48,6 +48,7 @@ class CuisineRecipesController: BaseController {
         collection.delegate = self
         collection.dataSource = self
         collection.backgroundColor = .clear
+        collection.showsVerticalScrollIndicator = false
         collection.translatesAutoresizingMaskIntoConstraints = false
         return collection
     }()
@@ -125,7 +126,7 @@ extension CuisineRecipesController: CollectionConfiguration {
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "\(DifficultyHeader.self)",
+        guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "\(CuisineRecipesCell.self)",
                                                             for: indexPath) as? CuisineRecipesCell else {
             return UICollectionViewCell()
         }

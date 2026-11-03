@@ -10,7 +10,7 @@ import UIKit
 class JourneyFeaturesCell: UICollectionViewCell {
     private lazy var iconView: UIView = {
         let view = UIView()
-        view.backgroundColor = UIColor(red: 253/255, green: 230/255, blue: 209/255, alpha: 1)
+        view.backgroundColor = .atlasPeach
         view.layer.cornerRadius = 16
         view.translatesAutoresizingMaskIntoConstraints = false
         return view
@@ -18,7 +18,7 @@ class JourneyFeaturesCell: UICollectionViewCell {
     
     private lazy var iconImageView: UIImageView = {
         let image = UIImageView()
-        image.tintColor = UIColor(red: 236/255, green: 111/255, blue: 26/255, alpha: 1)
+        image.tintColor = .atlasOrange
         image.contentMode = .scaleAspectFit
         image.translatesAutoresizingMaskIntoConstraints = false
         return image
@@ -26,7 +26,7 @@ class JourneyFeaturesCell: UICollectionViewCell {
     
     private var titleLabel: UILabel = {
         let label = UILabel()
-        label.textColor = UIColor(red: 42/255, green: 31/255, blue: 23/255, alpha: 1)
+        label.textColor = .atlasDark
         label.font = UIFont.systemFont(ofSize: 16, weight: .bold)
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
@@ -34,7 +34,7 @@ class JourneyFeaturesCell: UICollectionViewCell {
     
     private lazy var descriptionLabel: UILabel = {
         let label = UILabel()
-        label.textColor = UIColor(red: 110/255, green: 96/255, blue: 84/255, alpha: 1)
+        label.textColor = .atlasGray
         label.font = UIFont.systemFont(ofSize: 12, weight: .regular)
         label.numberOfLines = 0
         label.translatesAutoresizingMaskIntoConstraints = false

@@ -15,5 +15,6 @@ class DiscoverController: BaseController {
     
     override func configureUI() {
         navigationItem.title = "Discover"
+        view.backgroundColor = .atlasCream
     }
 }

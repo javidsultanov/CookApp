@@ -8,8 +8,6 @@
 import UIKit
 
 class CuisinesController: BaseController {
-<<<<<<< Updated upstream
-=======
     private lazy var collection: UICollectionView = {
         let layout = UICollectionViewFlowLayout()
         layout.minimumLineSpacing = 12
@@ -21,21 +19,18 @@ class CuisinesController: BaseController {
         collection.delegate = self
         collection.dataSource = self
         collection.backgroundColor = .clear
+        collection.showsVerticalScrollIndicator = false
         collection.translatesAutoresizingMaskIntoConstraints = false
         return collection
     }()
     
     private let viewModel = CuisinesViewModel()
->>>>>>> Stashed changes
 
     override func viewDidLoad() {
         super.viewDidLoad()
     }
     
     override func configureUI() {
-<<<<<<< Updated upstream
-        navigationItem.title = "Cuisines"
-=======
         navigationItem.title = "World Cuisines"
         view.backgroundColor = .atlasCream
     }
@@ -91,6 +86,5 @@ extension CuisinesController: CollectionConfiguration {
         let coordinator = CuisineRecipesCoordinator(navigationController: navigationController,
                                                     cuisine: viewModel.cuisines[indexPath.item])
         coordinator.start()
->>>>>>> Stashed changes
     }
 }
