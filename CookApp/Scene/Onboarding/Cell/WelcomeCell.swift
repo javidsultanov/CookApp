@@ -58,9 +58,7 @@ class WelcomeCell: UICollectionViewCell {
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
-    
-    static let identifier = "WelcomeCell"
-    
+        
     override init(frame: CGRect) {
         super.init(frame: frame)
         

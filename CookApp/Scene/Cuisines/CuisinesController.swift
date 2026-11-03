@@ -15,7 +15,7 @@ class CuisinesController: BaseController {
         layout.sectionInset = .init(top: 0, left: 0, bottom: 16, right: 0)
         
         let collection = UICollectionView(frame: .zero, collectionViewLayout: layout)
-        collection.register(CuisineCardCell.self, forCellWithReuseIdentifier: CuisineCardCell.identifier)
+        collection.register(CuisineCardCell.self, forCellWithReuseIdentifier: "\(CuisineCardCell.self)")
         collection.delegate = self
         collection.dataSource = self
         collection.backgroundColor = .clear
@@ -65,7 +65,7 @@ extension CuisinesController: CollectionConfiguration {
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: CuisineCardCell.identifier,
+        guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "\(CuisineCardCell.self)",
                                                             for: indexPath) as? CuisineCardCell else {
             return UICollectionViewCell()
         }

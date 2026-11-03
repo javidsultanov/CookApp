@@ -38,9 +38,7 @@ class SelectCuisineCell: UICollectionViewCell {
         image.translatesAutoresizingMaskIntoConstraints = false
         return image
     }()
-    
-    static let identifier = "SelectCuisineCell"
-    
+        
     override init(frame: CGRect) {
         super.init(frame: frame)
         

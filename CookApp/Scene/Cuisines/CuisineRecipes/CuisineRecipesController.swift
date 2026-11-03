@@ -41,10 +41,10 @@ class CuisineRecipesController: BaseController {
         layout.sectionInset = .init(top: 0, left: 0, bottom: 16, right: 0)
         
         let collection = UICollectionView(frame: .zero, collectionViewLayout: layout)
-        collection.register(CuisineRecipesCell.self, forCellWithReuseIdentifier: CuisineRecipesCell.identifier)
+        collection.register(CuisineRecipesCell.self, forCellWithReuseIdentifier: "\(CuisineRecipesCell.self)")
         collection.register(DifficultyHeader.self,
                             forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader,
-                            withReuseIdentifier: DifficultyHeader.identifier)
+                            withReuseIdentifier: "\(DifficultyHeader.self)")
         collection.delegate = self
         collection.dataSource = self
         collection.backgroundColor = .clear
@@ -126,7 +126,7 @@ extension CuisineRecipesController: CollectionConfiguration {
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: CuisineRecipesCell.identifier,
+        guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "\(CuisineRecipesCell.self)",
                                                             for: indexPath) as? CuisineRecipesCell else {
             return UICollectionViewCell()
         }
@@ -137,7 +137,7 @@ extension CuisineRecipesController: CollectionConfiguration {
     
     func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
         guard let header = collectionView.dequeueReusableSupplementaryView(ofKind: kind,
-                                                                           withReuseIdentifier: DifficultyHeader.identifier,
+                                                                           withReuseIdentifier: "\(DifficultyHeader.self)",
                                                                            for: indexPath) as? DifficultyHeader else {
             return UICollectionReusableView()
         }

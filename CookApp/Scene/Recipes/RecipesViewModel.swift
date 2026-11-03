@@ -10,10 +10,14 @@ import Foundation
 final class RecipesViewModel {
     var manager: RecipeManagerUseCase
     var sections: [DifficultySection] = []
+    var savedIDs: [Int] = []
     
     init(manager: RecipeManagerUseCase = RecipeManager()) {
         self.manager = manager
+        configureDataBaseManager()
     }
+    
+    private let dataBaseManager = RecipeDataBaseManager()
     
     var success: (() -> Void)?
     var error: ((String) -> Void)?
@@ -29,6 +33,43 @@ final class RecipesViewModel {
                 })
                 self.success?()
             }
+        }
+    }
+    
+    func getSavedRecipes() {
+        dataBaseManager.getRecipes()
+    }
+    
+    func isSaved(recipe: RecipeCard) -> Bool {
+        savedIDs.contains(recipe.id ?? 0)
+    }
+    
+    func saveButtonTapped(recipe: RecipeCard) {
+        if isSaved(recipe: recipe) {
+            dataBaseManager.deleteRecipe(recipeID: recipe.id ?? 0)
+        } else {
+            dataBaseManager.saveRecipe(recipe: recipe)
+        }
+    }
+    
+    func configureDataBaseManager() {
+        dataBaseManager.fetchCallback = { recipes in
+            self.savedIDs = recipes.map({ Int($0.recipeID) })
+            self.success?()
+        }
+        
+        dataBaseManager.saveCallback = { recipe in
+            self.savedIDs.append(Int(recipe.recipeID))
+            self.success?()
+        }
+        
+        dataBaseManager.deleteCallback = { recipeID in
+            self.savedIDs.removeAll (where: { $0 == recipeID })
+            self.success?()
+        }
+        
+        dataBaseManager.errorCallback = { errorMessage in
+            self.error?(errorMessage)
         }
     }
 }

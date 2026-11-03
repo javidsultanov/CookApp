@@ -14,9 +14,7 @@ class CategoryCell: UICollectionViewCell {
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
-    
-    static let identifier = "CategoryCell"
-    
+        
     override init(frame: CGRect) {
         super.init(frame: frame)
         contentView.layer.cornerRadius = 16
