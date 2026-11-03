@@ -68,6 +68,11 @@ class CuisineRecipesController: BaseController {
         super.viewDidLoad()
     }
     
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        viewModel.getSavedRecipes()
+    }
+    
     override func configureUI() {
         navigationItem.title = viewModel.cuisine.name
         view.backgroundColor = .atlasCream
@@ -131,7 +136,12 @@ extension CuisineRecipesController: CollectionConfiguration {
             return UICollectionViewCell()
         }
         
-        cell.configure(data: viewModel.sections[indexPath.section].recipes[indexPath.item])
+        let recipe = viewModel.sections[indexPath.section].recipes[indexPath.item]
+        cell.configure(data: recipe)
+        cell.configureSaveButton(isSaved: viewModel.isSaved(recipe: recipe))
+        cell.saveCallback = { [weak self] in
+            self?.viewModel.saveButtonTapped(recipe: recipe)
+        }
         return cell
     }
     
