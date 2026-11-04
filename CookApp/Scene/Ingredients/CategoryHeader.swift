@@ -15,7 +15,7 @@ class CategoryHeader: UICollectionReusableView {
         layout.estimatedItemSize = UICollectionViewFlowLayout.automaticSize
         
         let collection = UICollectionView(frame: .zero, collectionViewLayout: layout)
-        collection.register(CategoryCell.self, forCellWithReuseIdentifier: CategoryCell.identifier)
+        collection.register(CategoryCell.self, forCellWithReuseIdentifier: "\(CategoryCell.self)")
         collection.delegate = self
         collection.dataSource = self
         collection.backgroundColor = .clear
@@ -28,9 +28,7 @@ class CategoryHeader: UICollectionReusableView {
     private var selectedIndex: Int?
     
     var categoryCallback: ((Int?) -> Void)?
-    
-    static let identifier = "CategoryHeader"
-    
+        
     override init(frame: CGRect) {
         super.init(frame: frame)
         
@@ -76,7 +74,7 @@ extension CategoryHeader: CollectionConfiguration {
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: CategoryCell.identifier,
+        guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "\(CategoryCell.self)",
                                                             for: indexPath) as? CategoryCell else {
             return UICollectionViewCell()
         }

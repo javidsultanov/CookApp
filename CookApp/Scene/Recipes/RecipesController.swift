@@ -14,10 +14,10 @@ class RecipesController: BaseController {
         layout.sectionInset = .init(top: 0, left: 0, bottom: 16, right: 0)
         
         let collection = UICollectionView(frame: .zero, collectionViewLayout: layout)
-        collection.register(CuisineRecipesCell.self, forCellWithReuseIdentifier: CuisineRecipesCell.identifier)
+        collection.register(CuisineRecipesCell.self, forCellWithReuseIdentifier: "\(CuisineRecipesCell.self)")
         collection.register(DifficultyHeader.self,
                             forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader,
-                            withReuseIdentifier: DifficultyHeader.identifier)
+                            withReuseIdentifier: "\(DifficultyHeader.self)")
         collection.delegate = self
         collection.dataSource = self
         collection.backgroundColor = .clear
@@ -30,6 +30,11 @@ class RecipesController: BaseController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        viewModel.getSavedRecipes()
     }
     
     override func configureUI() {
@@ -71,18 +76,23 @@ extension RecipesController: CollectionConfiguration {
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: CuisineRecipesCell.identifier,
+        guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "\(CuisineRecipesCell.self)",
                                                             for: indexPath) as? CuisineRecipesCell else {
             return UICollectionViewCell()
         }
         
-        cell.configure(data: viewModel.sections[indexPath.section].recipes[indexPath.item], showCuisine: true)
+        let recipe = viewModel.sections[indexPath.section].recipes[indexPath.item]
+        cell.configure(data: recipe, showCuisine: true)
+        cell.configureSaveButton(isSaved: viewModel.isSaved(recipe: recipe))
+        cell.saveCallback = { [weak self] in
+            self?.viewModel.saveButtonTapped(recipe: recipe)
+        }
         return cell
     }
     
     func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
         guard let header = collectionView.dequeueReusableSupplementaryView(ofKind: kind,
-                                                                           withReuseIdentifier: DifficultyHeader.identifier,
+                                                                           withReuseIdentifier: "\(DifficultyHeader.self)",
                                                                            for: indexPath) as? DifficultyHeader else {
             return UICollectionReusableView()
         }

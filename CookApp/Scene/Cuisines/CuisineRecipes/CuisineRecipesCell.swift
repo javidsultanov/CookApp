@@ -35,8 +35,20 @@ class CuisineRecipesCell: UICollectionViewCell {
         return label
     }()
     
-    static let identifier = "CuisineRecipesCell"
+    private lazy var saveButton: UIButton = {
+        let button = UIButton()
+        let configuration = UIImage.SymbolConfiguration(pointSize: 16, weight: .regular, scale: .medium)
+        let image = UIImage(systemName: "bookmark", withConfiguration: configuration)
+        
+        button.setImage(image, for: .normal)
+        button.tintColor = .atlasOrange
+        button.addTarget(self, action: #selector(saveButtonTapped), for: .touchUpInside)
+        button.translatesAutoresizingMaskIntoConstraints = false
+        return button
+    }()
     
+    var saveCallback: (() -> Void)?
+        
     override init(frame: CGRect) {
         super.init(frame: frame)
         
@@ -53,6 +65,7 @@ class CuisineRecipesCell: UICollectionViewCell {
         contentView.addSubview(recipeImageView)
         contentView.addSubview(titleLabel)
         contentView.addSubview(infoLabel)
+        contentView.addSubview(saveButton)
         
         NSLayoutConstraint.activate([
             recipeImageView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 12),
@@ -61,10 +74,13 @@ class CuisineRecipesCell: UICollectionViewCell {
             recipeImageView.heightAnchor.constraint(equalToConstant: 72),
             
             titleLabel.topAnchor.constraint(equalTo: recipeImageView.topAnchor, constant: 4),
-            titleLabel.leadingAnchor.constraint(equalTo: recipeImageView.trailingAnchor, constant: 12),
+            titleLabel.leadingAnchor.constraint(equalTo: recipeImageView.trailingAnchor, constant: 4),
             
             infoLabel.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: 4),
-            infoLabel.leadingAnchor.constraint(equalTo: titleLabel.leadingAnchor)
+            infoLabel.leadingAnchor.constraint(equalTo: titleLabel.leadingAnchor),
+            
+            saveButton.centerYAnchor.constraint(equalTo: contentView.centerYAnchor),
+            saveButton.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -4),
         ])
     }
     
@@ -79,6 +95,24 @@ class CuisineRecipesCell: UICollectionViewCell {
         } else {
             infoLabel.text = "\(data.category ?? "") · \(data.cookTimeMinutes ?? 0) minutes · \(data.ingredientCount ?? 0) ingredients"
         }
+    }
+    
+    func configureSaved(entity: RecipeEntity) {
+        recipeImageView.image = nil
+        recipeImageView.loadImage(url: entity.recipeImage ?? "")
+        
+        titleLabel.text = entity.recipeTitle
+        infoLabel.text = "\(entity.recipeFlag ?? "") \(entity.cuisineTitle ?? "") · \(entity.recipeMinutes) minutes"
+    }
+    
+    func configureSaveButton(isSaved: Bool) {
+        let configuration = UIImage.SymbolConfiguration(pointSize: 24, weight: .regular, scale: .medium)
+        let image = UIImage(systemName: isSaved ? "bookmark.fill" : "bookmark", withConfiguration: configuration)
+        saveButton.setImage(image, for: .normal)
+    }
+    
+    @objc private func saveButtonTapped() {
+        saveCallback?()
     }
     
     required init?(coder: NSCoder) {

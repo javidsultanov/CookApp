@@ -33,7 +33,7 @@ class JourneyCell: UICollectionViewCell {
         layout.minimumLineSpacing = 12
         
         let collection = UICollectionView(frame: .zero, collectionViewLayout: layout)
-        collection.register(JourneyFeaturesCell.self, forCellWithReuseIdentifier: JourneyFeaturesCell.identifier)
+        collection.register(JourneyFeaturesCell.self, forCellWithReuseIdentifier: "\(JourneyFeaturesCell.self)")
         collection.delegate = self
         collection.dataSource = self
         collection.backgroundColor = .clear
@@ -57,9 +57,7 @@ class JourneyCell: UICollectionViewCell {
     }()
     
     private var features: [Feature] = []
-    
-    static let identifier = "JourneyCell"
-    
+        
     override init(frame: CGRect) {
         super.init(frame: frame)
         
@@ -109,7 +107,7 @@ extension JourneyCell: CollectionConfiguration {
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: JourneyFeaturesCell.identifier,
+        guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "\(JourneyFeaturesCell.self)",
                                                             for: indexPath) as? JourneyFeaturesCell else {
             return UICollectionViewCell()
         }

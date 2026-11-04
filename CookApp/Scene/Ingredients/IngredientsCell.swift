@@ -33,9 +33,7 @@ class IngredientsCell: UICollectionViewCell {
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
-    
-    static let identifier = "IngredientsCell"
-    
+        
     override init(frame: CGRect) {
         super.init(frame: frame)
         
