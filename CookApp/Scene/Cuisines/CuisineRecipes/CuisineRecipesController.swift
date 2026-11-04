@@ -8,40 +8,20 @@
 import UIKit
 
 class CuisineRecipesController: BaseController {
-    private lazy var cuisineImageView: UIImageView = {
-        let image = UIImageView()
-        image.contentMode = .scaleAspectFill
-        image.clipsToBounds = true
-        image.layer.cornerRadius = 24
-        image.backgroundColor = .atlasPeach
-        image.translatesAutoresizingMaskIntoConstraints = false
-        return image
-    }()
-    
-    private lazy var nameLabel: UILabel = {
-        let label = UILabel()
-        label.font = UIFont.systemFont(ofSize: 28, weight: .bold)
-        label.textColor = .atlasDark
-        label.translatesAutoresizingMaskIntoConstraints = false
-        return label
-    }()
-    
-    private lazy var descriptionLabel: UILabel = {
-        let label = UILabel()
-        label.font = UIFont.systemFont(ofSize: 12, weight: .regular)
-        label.textColor = .atlasGray
-        label.numberOfLines = 0
-        label.translatesAutoresizingMaskIntoConstraints = false
-        return label
-    }()
-    
     private lazy var collection: UICollectionView = {
         let layout = UICollectionViewFlowLayout()
         layout.minimumLineSpacing = 12
         layout.sectionInset = .init(top: 0, left: 0, bottom: 16, right: 0)
         
         let collection = UICollectionView(frame: .zero, collectionViewLayout: layout)
+<<<<<<< Updated upstream
         collection.register(CuisineRecipesCell.self, forCellWithReuseIdentifier: CuisineRecipesCell.identifier)
+=======
+        collection.register(CuisineRecipesCell.self, forCellWithReuseIdentifier: "\(CuisineRecipesCell.self)")
+        collection.register(CuisineHeader.self,
+                            forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader,
+                            withReuseIdentifier: "\(CuisineHeader.self)")
+>>>>>>> Stashed changes
         collection.register(DifficultyHeader.self,
                             forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader,
                             withReuseIdentifier: DifficultyHeader.identifier)
@@ -71,34 +51,15 @@ class CuisineRecipesController: BaseController {
     override func configureUI() {
         navigationItem.title = viewModel.cuisine.name
         view.backgroundColor = .atlasCream
-        
-        cuisineImageView.loadImage(url: viewModel.cuisine.imageURL ?? "")
-        nameLabel.text = "\(viewModel.cuisine.flagEmoji ?? "") \(viewModel.cuisine.name ?? "")"
-        descriptionLabel.text = viewModel.cuisine.description
     }
     
     override func configureConstraints() {
-        view.addSubview(cuisineImageView)
-        view.addSubview(nameLabel)
-        view.addSubview(descriptionLabel)
         view.addSubview(collection)
         
         NSLayoutConstraint.activate([
-            cuisineImageView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 4),
-            cuisineImageView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-            cuisineImageView.widthAnchor.constraint(equalTo: view.widthAnchor, multiplier: 0.92),
-            cuisineImageView.heightAnchor.constraint(equalTo: view.heightAnchor, multiplier: 0.28),
-            
-            nameLabel.topAnchor.constraint(equalTo: cuisineImageView.bottomAnchor, constant: 16),
-            nameLabel.leadingAnchor.constraint(equalTo: cuisineImageView.leadingAnchor),
-            
-            descriptionLabel.topAnchor.constraint(equalTo: nameLabel.bottomAnchor, constant: 8),
-            descriptionLabel.leadingAnchor.constraint(equalTo: nameLabel.leadingAnchor),
-            descriptionLabel.trailingAnchor.constraint(equalTo: nameLabel.trailingAnchor),
-            
-            collection.topAnchor.constraint(equalTo: descriptionLabel.bottomAnchor, constant: 8),
-            collection.leadingAnchor.constraint(equalTo: cuisineImageView.leadingAnchor),
-            collection.trailingAnchor.constraint(equalTo: cuisineImageView.trailingAnchor),
+            collection.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
+            collection.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            collection.widthAnchor.constraint(equalTo: view.widthAnchor, multiplier: 0.96),
             collection.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor)
         ])
     }
@@ -136,6 +97,17 @@ extension CuisineRecipesController: CollectionConfiguration {
     }
     
     func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
+        if indexPath.section == 0 {
+            guard let header = collectionView.dequeueReusableSupplementaryView(ofKind: kind,
+                                                                               withReuseIdentifier: "\(CuisineHeader.self)",
+                                                                               for: indexPath) as? CuisineHeader else {
+                return UICollectionReusableView()
+            }
+            
+            header.configure(data: viewModel.cuisine, section: viewModel.sections[indexPath.section])
+            return header
+        }
+        
         guard let header = collectionView.dequeueReusableSupplementaryView(ofKind: kind,
                                                                            withReuseIdentifier: DifficultyHeader.identifier,
                                                                            for: indexPath) as? DifficultyHeader else {
@@ -147,7 +119,7 @@ extension CuisineRecipesController: CollectionConfiguration {
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, referenceSizeForHeaderInSection section: Int) -> CGSize {
-        .init(width: collectionView.frame.width, height: 48)
+        .init(width: collectionView.frame.width, height: section == 0 ? 400 : 48)
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
