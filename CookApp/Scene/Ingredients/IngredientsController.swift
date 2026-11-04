@@ -24,10 +24,10 @@ class IngredientsController: BaseController {
         layout.sectionInset = .init(top: 0, left: 0, bottom: 16, right: 0)
         
         let collection = UICollectionView(frame: .zero, collectionViewLayout: layout)
-        collection.register(IngredientsCell.self, forCellWithReuseIdentifier: IngredientsCell.identifier)
+        collection.register(IngredientsCell.self, forCellWithReuseIdentifier: "\(IngredientsCell.self)")
         collection.register(CategoryHeader.self, forSupplementaryViewOfKind:
                                 UICollectionView.elementKindSectionHeader,
-                            withReuseIdentifier: CategoryHeader.identifier)
+                            withReuseIdentifier: "\(CategoryHeader.self)")
         collection.delegate = self
         collection.dataSource = self
         collection.backgroundColor = .clear
@@ -90,7 +90,7 @@ extension IngredientsController: CollectionConfiguration {
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: IngredientsCell.identifier,
+        guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "\(IngredientsCell.self)",
                                                             for: indexPath) as? IngredientsCell else {
             return UICollectionViewCell()
         }
@@ -101,7 +101,7 @@ extension IngredientsController: CollectionConfiguration {
     
     func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
         guard let header = collectionView.dequeueReusableSupplementaryView(ofKind: kind,
-                                                                           withReuseIdentifier: CategoryHeader.identifier,
+                                                                           withReuseIdentifier: "\(CategoryHeader.self)",
                                                                            for: indexPath) as? CategoryHeader else {
             return UICollectionReusableView()
         }

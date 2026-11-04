@@ -22,9 +22,7 @@ class DifficultyHeader: UICollectionReusableView {
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
-    
-    static let identifier = "DifficultyHeader"
-    
+        
     override init(frame: CGRect) {
         super.init(frame: frame)
         
