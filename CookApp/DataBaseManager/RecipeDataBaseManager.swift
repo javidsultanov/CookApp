@@ -34,6 +34,9 @@ class RecipeDataBaseManager {
             let count = try context.count(for: request)
             
             if count > 0 { return }
+            if count > 0 {
+                return
+            }
             
             let recipeEntity = RecipeEntity(context: context)
             recipeEntity.recipeID = Int64(recipe.id ?? 0)
