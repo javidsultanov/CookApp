@@ -17,4 +17,8 @@ struct RecipeManager: RecipeManagerUseCase {
     func getRecipes(cuisinesID: [Int], completion: @escaping ([RecipeCard]?, String?) -> Void) {
         manager.request(model: [RecipeCard].self, endpoint: RecipeEndpoint.recipeList(cuisinesID: cuisinesID).path, completion: completion)
     }
+    
+    func getRecipeDetails(id: Int, completion: @escaping ([RecipeDetail]?, String?) -> Void) {
+        manager.request(model: [RecipeDetail].self, endpoint: RecipeEndpoint.recipeDetail(id: id).path, completion: completion)
+    }
 }

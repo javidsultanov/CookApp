@@ -33,6 +33,7 @@ class RecipeDataBaseManager {
         do {
             let count = try context.count(for: request)
             
+            if count > 0 { return }
             if count > 0 {
                 return
             }
@@ -44,6 +45,30 @@ class RecipeDataBaseManager {
             recipeEntity.recipeFlag = recipe.flagEmoji
             recipeEntity.recipeMinutes = Int64(recipe.cookTimeMinutes ?? 0)
             recipeEntity.cuisineTitle = recipe.cuisineName
+            
+            try context.save()
+            saveCallback?(recipeEntity)
+        } catch {
+            errorCallback?(error.localizedDescription)
+        }
+    }
+    
+    func saveRecipeDetail(detail: RecipeDetail) {
+        let request = RecipeEntity.fetchRequest()
+        request.predicate = NSPredicate(format: "recipeID == %d", detail.id ?? 0)
+        
+        do {
+            let count = try context.count(for: request)
+            
+            if count > 0 { return }
+            
+            let recipeEntity = RecipeEntity(context: context)
+            recipeEntity.recipeID = Int64(detail.id ?? 0)
+            recipeEntity.recipeImage = detail.imageURL
+            recipeEntity.recipeTitle = detail.title
+            recipeEntity.recipeFlag = detail.cuisine?.flagEmoji
+            recipeEntity.recipeMinutes = Int64(detail.cookTimeMinutes ?? 0)
+            recipeEntity.cuisineTitle = detail.cuisine?.name
             
             try context.save()
             saveCallback?(recipeEntity)
