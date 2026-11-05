@@ -12,15 +12,41 @@
 
 import Foundation
 
+protocol IngredientProtocol {
+    var imagePath: String { get }
+    var titleText: String { get }
+    var countText: String { get }
+}
+
 // MARK: - Ingredient
-struct Ingredient: Codable {
+struct Ingredient: Codable, IngredientProtocol {
     let id: Int?
     let name: String?
     let category: String?
     let imageURL: String?
+    let recipeIngredients: [RecipeCount]?
+    
+    var imagePath: String {
+        imageURL ?? ""
+    }
+    
+    var titleText: String {
+        name ?? ""
+    }
+    
+    var countText: String {
+        let count = recipeIngredients?.first?.count ?? 0
+        return count == 1 ? "1 recipe" : "\(count) recipes"
+    }
 
     enum CodingKeys: String, CodingKey {
         case id, name, category
         case imageURL = "image_url"
+        case recipeIngredients = "recipe_ingredients"
     }
+}
+
+//MARK: - RecipeCount
+struct RecipeCount: Codable {
+    let count: Int?
 }
