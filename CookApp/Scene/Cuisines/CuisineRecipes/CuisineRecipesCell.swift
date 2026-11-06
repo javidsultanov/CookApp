@@ -37,7 +37,7 @@ class CuisineRecipesCell: UICollectionViewCell {
     
     private lazy var saveButton: UIButton = {
         let button = UIButton()
-        let configuration = UIImage.SymbolConfiguration(pointSize: 16, weight: .regular, scale: .medium)
+        let configuration = UIImage.SymbolConfiguration(pointSize: 24, weight: .regular, scale: .medium)
         let image = UIImage(systemName: "bookmark", withConfiguration: configuration)
         
         button.setImage(image, for: .normal)
