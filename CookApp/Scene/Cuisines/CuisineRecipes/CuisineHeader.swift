@@ -60,7 +60,7 @@ class CuisineHeader: UICollectionReusableView {
             cuisineImageView.heightAnchor.constraint(equalToConstant: 240),
             
             nameLabel.topAnchor.constraint(equalTo: cuisineImageView.bottomAnchor, constant: 12),
-            nameLabel.leadingAnchor.constraint(equalTo: cuisineImageView.leadingAnchor),
+            nameLabel.leadingAnchor.constraint(equalTo: cuisineImageView.leadingAnchor, constant: 4),
             
             descriptionLabel.topAnchor.constraint(equalTo: nameLabel.bottomAnchor, constant: 8),
             descriptionLabel.leadingAnchor.constraint(equalTo: nameLabel.leadingAnchor),
