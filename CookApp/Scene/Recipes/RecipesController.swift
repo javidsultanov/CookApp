@@ -108,4 +108,13 @@ extension RecipesController: CollectionConfiguration {
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         .init(width: collectionView.frame.width, height: 96)
     }
+    
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        guard let navigationController = self.navigationController else { return }
+        
+        let recipe = viewModel.sections[indexPath.section].recipes[indexPath.item]
+        let coordinator = RecipeDetailCoordinator(navigationController: navigationController,
+                                                  id: recipe.id ?? 0)
+        coordinator.start()
+    }
 }
