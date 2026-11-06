@@ -35,10 +35,10 @@ class DifficultyHeader: UICollectionReusableView {
         
         NSLayoutConstraint.activate([
             titleLabel.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -8),
-            titleLabel.leadingAnchor.constraint(equalTo: leadingAnchor),
+            titleLabel.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 4),
             
             countLabel.centerYAnchor.constraint(equalTo: titleLabel.centerYAnchor),
-            countLabel.trailingAnchor.constraint(equalTo: trailingAnchor)
+            countLabel.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -4)
         ])
     }
     

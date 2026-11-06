@@ -14,7 +14,7 @@ class CuisineRecipesController: BaseController {
         layout.sectionInset = .init(top: 0, left: 0, bottom: 16, right: 0)
         
         let collection = UICollectionView(frame: .zero, collectionViewLayout: layout)
-        collection.register(CuisineRecipesCell.self, forCellWithReuseIdentifier: CuisineRecipesCell.identifier)
+        collection.register(CuisineRecipesCell.self, forCellWithReuseIdentifier: "\(CuisineRecipesCell.self)")
         collection.register(CuisineRecipesCell.self, forCellWithReuseIdentifier: "\(CuisineRecipesCell.self)")
         collection.register(CuisineHeader.self,
                             forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader,
@@ -127,10 +127,19 @@ extension CuisineRecipesController: CollectionConfiguration {
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, referenceSizeForHeaderInSection section: Int) -> CGSize {
-        .init(width: collectionView.frame.width, height: section == 0 ? 400 : 48)
+        .init(width: collectionView.frame.width, height: section == 0 ? 360 : 48)
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         .init(width: collectionView.frame.width , height: 96)
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        guard let navigationController = self.navigationController else { return }
+        
+        let recipe = viewModel.sections[indexPath.section].recipes[indexPath.item]
+        let coordinator = RecipeDetailCoordinator(navigationController: navigationController,
+                                                  id: recipe.id ?? 0)
+        coordinator.start()
     }
 }
