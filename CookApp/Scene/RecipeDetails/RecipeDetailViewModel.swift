@@ -14,6 +14,7 @@ class RecipeDetailViewModel {
     init(manager: RecipeManagerUseCase = RecipeManager(), id: Int) {
         self.manager = manager
         self.id = id
+        configureDataBaseManager()
     }
     
     var recipeDetail: RecipeDetail?
