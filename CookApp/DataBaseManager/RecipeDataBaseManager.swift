@@ -12,31 +12,25 @@ import UIKit
 class RecipeDataBaseManager {
     private let context = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
     
-    var fetchCallback: (([RecipeEntity]) -> Void)?
     var saveCallback: ((RecipeEntity) -> Void)?
     var deleteCallback: ((Int) -> Void)?
     var errorCallback: ((String) -> Void)?
     
-    func getRecipes() {
-        do {
-            let recipes = try context.fetch(RecipeEntity.fetchRequest())
-            fetchCallback?(recipes)
-        } catch {
-            errorCallback?(error.localizedDescription)
-        }
+    func getSavedRecipes() -> [RecipeEntity] {
+        let savedRecipes = try? context.fetch(RecipeEntity.fetchRequest())
+        return savedRecipes ?? []
+    }
+    
+    func isSaved(recipeID: Int) -> Bool {
+        let request = RecipeEntity.fetchRequest()
+        request.predicate = NSPredicate(format: "recipeID == %d", recipeID)
+        
+        let count = (try? context.count(for: request)) ?? 0
+        return count > 0
     }
     
     func saveRecipe(recipe: RecipeCard) {
-        let request = RecipeEntity.fetchRequest()
-        request.predicate = NSPredicate(format: "recipeID == %d", recipe.id ?? 0)
-        
-        do {
-            let count = try context.count(for: request)
-            
-            if count > 0 { return }
-            if count > 0 {
-                return
-            }
+        if isSaved(recipeID: recipe.id ?? 0) { return }
             
             let recipeEntity = RecipeEntity(context: context)
             recipeEntity.recipeID = Int64(recipe.id ?? 0)
@@ -46,6 +40,7 @@ class RecipeDataBaseManager {
             recipeEntity.recipeMinutes = Int64(recipe.cookTimeMinutes ?? 0)
             recipeEntity.cuisineTitle = recipe.cuisineName
             
+        do {
             try context.save()
             saveCallback?(recipeEntity)
         } catch {
@@ -54,13 +49,7 @@ class RecipeDataBaseManager {
     }
     
     func saveRecipeDetail(detail: RecipeDetail) {
-        let request = RecipeEntity.fetchRequest()
-        request.predicate = NSPredicate(format: "recipeID == %d", detail.id ?? 0)
-        
-        do {
-            let count = try context.count(for: request)
-            
-            if count > 0 { return }
+        if isSaved(recipeID: detail.id ?? 0) { return }
             
             let recipeEntity = RecipeEntity(context: context)
             recipeEntity.recipeID = Int64(detail.id ?? 0)
@@ -70,6 +59,7 @@ class RecipeDataBaseManager {
             recipeEntity.recipeMinutes = Int64(detail.cookTimeMinutes ?? 0)
             recipeEntity.cuisineTitle = detail.cuisine?.name
             
+        do {
             try context.save()
             saveCallback?(recipeEntity)
         } catch {

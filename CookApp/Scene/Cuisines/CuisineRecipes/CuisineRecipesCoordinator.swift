@@ -19,6 +19,7 @@ class CuisineRecipesCoordinator: Coordinator {
     
     func start() {
         let controller = CuisineRecipesController(viewModel: .init(cuisine: cuisine))
+        controller.hidesBottomBarWhenPushed = true
         navigationController.show(controller, sender: nil)
     }
 }

@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		61998A18307CE98D000C1104 /* Alamofire in Frameworks */ = {isa = PBXBuildFile; productRef = 61998A17307CE98D000C1104 /* Alamofire */; };
 		61998A1B307CE999000C1104 /* Kingfisher in Frameworks */ = {isa = PBXBuildFile; productRef = 61998A1A307CE999000C1104 /* Kingfisher */; };
+		619E0FEE30A2F6540099E4F7 /* YouTubePlayerKit in Frameworks */ = {isa = PBXBuildFile; productRef = 619E0FED30A2F6540099E4F7 /* YouTubePlayerKit */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -42,6 +43,7 @@
 			files = (
 				61998A1B307CE999000C1104 /* Kingfisher in Frameworks */,
 				61998A18307CE98D000C1104 /* Alamofire in Frameworks */,
+				619E0FEE30A2F6540099E4F7 /* YouTubePlayerKit in Frameworks */,
 			);
 		};
 /* End PBXFrameworksBuildPhase section */
@@ -83,6 +85,7 @@
 			packageProductDependencies = (
 				61998A17307CE98D000C1104 /* Alamofire */,
 				61998A1A307CE999000C1104 /* Kingfisher */,
+				619E0FED30A2F6540099E4F7 /* YouTubePlayerKit */,
 			);
 			productName = CookApp;
 			productReference = 6199898A307AC436000C1104 /* CookApp.app */;
@@ -115,6 +118,7 @@
 			packageReferences = (
 				61998A16307CE98D000C1104 /* XCRemoteSwiftPackageReference "Alamofire" */,
 				61998A19307CE999000C1104 /* XCRemoteSwiftPackageReference "Kingfisher" */,
+				619E0FEC30A2F6540099E4F7 /* XCRemoteSwiftPackageReference "YouTubePlayerKit" */,
 			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = 6199898B307AC436000C1104 /* Products */;
@@ -364,6 +368,14 @@
 				minimumVersion = 8.13.0;
 			};
 		};
+		619E0FEC30A2F6540099E4F7 /* XCRemoteSwiftPackageReference "YouTubePlayerKit" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/SvenTiigi/YouTubePlayerKit";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 2.0.5;
+			};
+		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
@@ -376,6 +388,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 61998A19307CE999000C1104 /* XCRemoteSwiftPackageReference "Kingfisher" */;
 			productName = Kingfisher;
+		};
+		619E0FED30A2F6540099E4F7 /* YouTubePlayerKit */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 619E0FEC30A2F6540099E4F7 /* XCRemoteSwiftPackageReference "YouTubePlayerKit" */;
+			productName = YouTubePlayerKit;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};

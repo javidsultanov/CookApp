@@ -46,6 +46,14 @@ class OnboardingController: BaseController {
         return button
     }()
     
+    private let loadingView: UIActivityIndicatorView = {
+        let view = UIActivityIndicatorView(style: .large)
+        view.color = .atlasOrange
+        view.hidesWhenStopped = true
+        view.translatesAutoresizingMaskIntoConstraints = false
+        return view
+    }()
+    
     private let viewModel = OnboardingViewModel()
     
     override func viewDidLoad() {
@@ -60,6 +68,7 @@ class OnboardingController: BaseController {
         view.addSubview(pageControl)
         view.addSubview(collection)
         view.addSubview(button)
+        view.addSubview(loadingView)
         
         NSLayoutConstraint.activate([
             pageControl.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 8),
@@ -73,12 +82,15 @@ class OnboardingController: BaseController {
             button.centerXAnchor.constraint(equalTo: view.centerXAnchor),
             button.widthAnchor.constraint(equalTo: view.widthAnchor, multiplier: 0.88),
             button.heightAnchor.constraint(equalToConstant: 60),
-            button.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -16)
+            button.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -16),
+            
+            loadingView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            loadingView.centerYAnchor.constraint(equalTo: view.centerYAnchor)
         ])
     }
     
     override func configureViewModel() {
-        pageControl.numberOfPages = viewModel.pageCount
+        pageControl.numberOfPages = viewModel.pages.count
         
         viewModel.nextCallback = { [weak self] in
             self?.configureOnboading()
@@ -88,18 +100,38 @@ class OnboardingController: BaseController {
             self?.showHomePage()
         }
         
-        viewModel.success = { [weak self] in
-            self?.collection.reloadData()
+        viewModel.stateChanged = { [weak self] in
+            self?.configureState()
         }
-        
-        viewModel.error = { errorMessage in
-            print(errorMessage)
-        }
-        
+
         view.layoutIfNeeded()
         collection.reloadData()
         configureOnboading()
         viewModel.getCuisines()
+    }
+    
+    override func configureState() {
+        switch viewModel.state {
+        case .idle:
+            break
+        case .loading:
+            startLoading()
+        case .loaded:
+            stopLoading()
+            collection.reloadData()
+        case .error(let errorMessage):
+            stopLoading()
+            showDefaultAlert(title: "Error", message: errorMessage)
+        }
+    }
+    
+    override func startLoading() {
+        view.bringSubviewToFront(loadingView)
+        loadingView.startAnimating()
+    }
+    
+    override func stopLoading() {
+        loadingView.stopAnimating()
     }
     
     private func configureOnboading() {
@@ -133,19 +165,19 @@ class OnboardingController: BaseController {
 
 extension OnboardingController: CollectionConfiguration {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        viewModel.pageCount
+        viewModel.pages.count
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        switch indexPath.item {
-        case 0:
+        switch viewModel.pages[indexPath.item] {
+        case .welcome:
         guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "\(WelcomeCell.self)",
                                                                 for: indexPath) as? WelcomeCell else {
             return UICollectionViewCell()
             }
             
             return cell
-        case 1:
+        case .cuisines:
             guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "\(CuisinesCell.self)",
                                                                 for: indexPath) as? CuisinesCell else {
                 return UICollectionViewCell()
@@ -165,7 +197,8 @@ extension OnboardingController: CollectionConfiguration {
             }
             
             return cell
-        default:
+            
+        case .journey:
             guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "\(JourneyCell.self)",
                                                                 for: indexPath) as? JourneyCell else {
                 return UICollectionViewCell()

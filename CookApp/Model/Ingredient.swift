@@ -24,7 +24,7 @@ struct Ingredient: Codable, IngredientProtocol {
     let name: String?
     let category: String?
     let imageURL: String?
-    let recipeIngredients: [RecipeCount]?
+    let recipeCount: Int?
     
     var imagePath: String {
         imageURL ?? ""
@@ -35,18 +35,13 @@ struct Ingredient: Codable, IngredientProtocol {
     }
     
     var countText: String {
-        let count = recipeIngredients?.first?.count ?? 0
+        let count = recipeCount ?? 0
         return count == 1 ? "1 recipe" : "\(count) recipes"
     }
 
     enum CodingKeys: String, CodingKey {
         case id, name, category
         case imageURL = "image_url"
-        case recipeIngredients = "recipe_ingredients"
+        case recipeCount = "recipe_count"
     }
-}
-
-//MARK: - RecipeCount
-struct RecipeCount: Codable {
-    let count: Int?
 }

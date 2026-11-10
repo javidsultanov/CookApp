@@ -22,8 +22,15 @@ class RecipeDetailViewModel {
     
     private let dataBaseManager = RecipeDataBaseManager()
     
-    var success: (() -> Void)?
-    var error: ((String) -> Void)?
+    let sections = RecipeDetailSection.allCases
+        
+    var stateChanged: (() -> Void)?
+    
+    private(set) var state: State = .idle {
+        didSet {
+            stateChanged?()
+        }
+    }
     
     var ingredients: [RecipeIngredient] {
         recipeDetail?.ingredients ?? []
@@ -33,28 +40,30 @@ class RecipeDetailViewModel {
         recipeDetail?.steps ?? []
     }
     
-    var youtubeLink: String {
-        if let link = recipeDetail?.youtubeURL, !link.isEmpty {
-            return link
+    var youtubeLink: URL? {
+        guard let link = recipeDetail?.youtubeURL, !link.isEmpty else {
+            let title = recipeDetail?.title?.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed) ?? ""
+            return URL(string: "https://www.youtube.com/results?search_query=\(title)+recipe")
         }
-        
-        let title = recipeDetail?.title?.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed) ?? ""
-        return "https://www.youtube.com/results?search_query=\(title)+recipe"
+        return URL(string: link)
     }
     
     func getRecipeDetail() {
+        state = .loading
+        
         manager.getRecipeDetails(id: id) { data, errorMessage in
             if let errorMessage {
-                self.error?(errorMessage)
+                self.state = .error(errorMessage)
             } else if let data {
                 self.recipeDetail = data.first
-                self.success?()
+                self.state = .loaded
             }
         }
     }
     
-    func getSavedRecipes() {
-        dataBaseManager.getRecipes()
+    func checkSaved() {
+        isSaved = dataBaseManager.isSaved(recipeID: id)
+        stateChanged?()
     }
     
     func saveButtonTapped() {
@@ -68,23 +77,18 @@ class RecipeDetailViewModel {
     }
     
     private func configureDataBaseManager() {
-        dataBaseManager.fetchCallback = { recipes in
-            self.isSaved = recipes.contains(where: { Int($0.recipeID) == self.id })
-            self.success?()
-        }
-        
         dataBaseManager.saveCallback = { recipeDetail in
             self.isSaved = true
-            self.success?()
+            self.stateChanged?()
         }
         
         dataBaseManager.deleteCallback = { recipeDetailID in
             self.isSaved = false
-            self.success?()
+            self.stateChanged?()
         }
         
         dataBaseManager.errorCallback = { errorMessage in
-            self.error?(errorMessage)
+            self.state = .error(errorMessage)
         }
     }
 }

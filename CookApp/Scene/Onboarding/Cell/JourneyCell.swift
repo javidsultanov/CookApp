@@ -12,7 +12,7 @@ class JourneyCell: UICollectionViewCell {
         let label = UILabel()
         label.text = "Your cooking journey"
         label.textColor = .atlasDark
-        label.font = UIFont.systemFont(ofSize: 32, weight: .bold)
+        label.font = .systemFont(ofSize: 32, weight: .bold)
         label.numberOfLines = 0
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
@@ -22,7 +22,7 @@ class JourneyCell: UICollectionViewCell {
         let label = UILabel()
         label.text = "Everything you need from \"that looks good\" to \"I made it\"."
         label.textColor = .atlasGray
-        label.font = UIFont.systemFont(ofSize: 16, weight: .regular)
+        label.font = .systemFont(ofSize: 16, weight: .regular)
         label.numberOfLines = 0
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
@@ -46,10 +46,10 @@ class JourneyCell: UICollectionViewCell {
         label.text = """
             No account needed. Your data stays on this iPhone.
             
-            Developed by CC · (Cool Coding programs)
+            Developed by C.C. · (Cool Coding programs)
             """
         label.textColor = .atlasGray
-        label.font = UIFont.systemFont(ofSize: 12, weight: .regular)
+        label.font = .systemFont(ofSize: 12, weight: .regular)
         label.textAlignment = .center
         label.numberOfLines = 0
         label.translatesAutoresizingMaskIntoConstraints = false

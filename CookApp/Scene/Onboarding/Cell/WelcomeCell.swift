@@ -18,7 +18,7 @@ class WelcomeCell: UICollectionViewCell {
     private lazy var emojiLabel: UILabel = {
         let label = UILabel()
         label.text = "🥘"
-        label.font = UIFont.systemFont(ofSize: 120, weight: .regular)
+        label.font = .systemFont(ofSize: 120, weight: .regular)
         label.textAlignment = .center
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
@@ -35,7 +35,7 @@ class WelcomeCell: UICollectionViewCell {
                                     range: NSRange(location: 4, length: 5))
         
         label.attributedText = attributedText
-        label.font = UIFont.systemFont(ofSize: 44, weight: .bold)
+        label.font = .systemFont(ofSize: 44, weight: .bold)
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
@@ -44,7 +44,7 @@ class WelcomeCell: UICollectionViewCell {
         let label = UILabel()
         label.text = "WORLD CUISINES & RECIPES"
         label.textColor = .atlasOrange
-        label.font = UIFont.systemFont(ofSize: 12, weight: .bold)
+        label.font = .systemFont(ofSize: 12, weight: .bold)
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
@@ -53,7 +53,7 @@ class WelcomeCell: UICollectionViewCell {
         let label = UILabel()
         label.text = "Saw a dish you'd love to try? Find the recipe, check the ingredients and cook it at home, step by step."
         label.textColor = .atlasGray
-        label.font = UIFont.systemFont(ofSize: 16, weight: .regular)
+        label.font = .systemFont(ofSize: 16, weight: .regular)
         label.numberOfLines = 0
         label.translatesAutoresizingMaskIntoConstraints = false
         return label

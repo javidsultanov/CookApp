@@ -15,11 +15,9 @@ class CuisineRecipesController: BaseController {
         
         let collection = UICollectionView(frame: .zero, collectionViewLayout: layout)
         collection.register(CuisineRecipesCell.self, forCellWithReuseIdentifier: "\(CuisineRecipesCell.self)")
-        collection.register(CuisineRecipesCell.self, forCellWithReuseIdentifier: "\(CuisineRecipesCell.self)")
         collection.register(CuisineHeader.self,
                             forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader,
                             withReuseIdentifier: "\(CuisineHeader.self)")
-        collection.register(CuisineRecipesCell.self, forCellWithReuseIdentifier: "\(CuisineRecipesCell.self)")
         collection.register(DifficultyHeader.self,
                             forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader,
                             withReuseIdentifier: "\(DifficultyHeader.self)")
@@ -28,6 +26,14 @@ class CuisineRecipesController: BaseController {
         collection.backgroundColor = .clear
         collection.translatesAutoresizingMaskIntoConstraints = false
         return collection
+    }()
+    
+    private let loadingView: UIActivityIndicatorView = {
+        let view = UIActivityIndicatorView(style: .large)
+        view.color = .atlasOrange
+        view.hidesWhenStopped = true
+        view.translatesAutoresizingMaskIntoConstraints = false
+        return view
     }()
     
     private let viewModel: CuisineRecipesViewModel
@@ -47,7 +53,7 @@ class CuisineRecipesController: BaseController {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        viewModel.getSavedRecipes()
+        collection.reloadData()
     }
     
     override func configureUI() {
@@ -57,25 +63,49 @@ class CuisineRecipesController: BaseController {
     
     override func configureConstraints() {
         view.addSubview(collection)
+        view.addSubview(loadingView)
         
         NSLayoutConstraint.activate([
             collection.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
             collection.centerXAnchor.constraint(equalTo: view.centerXAnchor),
             collection.widthAnchor.constraint(equalTo: view.widthAnchor, multiplier: 0.96),
-            collection.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor)
+            collection.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor),
+            
+            loadingView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            loadingView.centerYAnchor.constraint(equalTo: view.centerYAnchor)
         ])
     }
     
     override func configureViewModel() {
-        viewModel.success = { [weak self] in
-            self?.collection.reloadData()
+        viewModel.stateChanged = { [weak self] in
+            self?.configureState()
         }
-        
-        viewModel.error = { errorMessage in
-            print(errorMessage)
-        }
-        
+
         viewModel.getCuisineRecipes()
+    }
+    
+    override func configureState() {
+        switch viewModel.state {
+        case .idle:
+            break
+        case .loading:
+            startLoading()
+        case .loaded:
+            stopLoading()
+            collection.reloadData()
+        case .error(let errorMessage):
+            stopLoading()
+            showDefaultAlert(title: "Error", message: errorMessage)
+        }
+    }
+    
+    override func startLoading() {
+        view.bringSubviewToFront(loadingView)
+        loadingView.startAnimating()
+    }
+    
+    override func stopLoading() {
+        loadingView.stopAnimating()
     }
 }
 

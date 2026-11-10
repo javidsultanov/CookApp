@@ -20,7 +20,7 @@ class RecipeIngredientsCell: UICollectionViewCell {
     
     private lazy var nameLabel: UILabel = {
         let label = UILabel()
-        label.font = UIFont.systemFont(ofSize: 12, weight: .bold)
+        label.font = .systemFont(ofSize: 12, weight: .bold)
         label.textColor = .atlasDark
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
@@ -28,7 +28,7 @@ class RecipeIngredientsCell: UICollectionViewCell {
     
     private lazy var amountLabel: UILabel = {
         let label = UILabel()
-        label.font = UIFont.systemFont(ofSize: 12, weight: .regular)
+        label.font = .systemFont(ofSize: 12, weight: .regular)
         label.textColor = .atlasGray
         label.textAlignment = .right
         label.translatesAutoresizingMaskIntoConstraints = false

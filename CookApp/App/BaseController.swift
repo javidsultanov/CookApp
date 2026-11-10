@@ -22,4 +22,10 @@ class BaseController: UIViewController {
     func configureConstraints() {}
     
     func configureViewModel() {}
+    
+    func startLoading() {}
+    
+    func stopLoading() {}
+    
+    func configureState() {}
 }

@@ -12,7 +12,7 @@ class CuisinesCell: UICollectionViewCell {
         let label = UILabel()
         label.text = "Which cuisines do you love?"
         label.textColor = .atlasDark
-        label.font = UIFont.systemFont(ofSize: 32, weight: .bold)
+        label.font = .systemFont(ofSize: 32, weight: .bold)
         label.numberOfLines = 0
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
@@ -22,7 +22,7 @@ class CuisinesCell: UICollectionViewCell {
         let label = UILabel()
         label.text = "Pick a few. We'll show recipes from them first. You can change this anytime in Settings."
         label.textColor = .atlasGray
-        label.font = UIFont.systemFont(ofSize: 16, weight: .regular)
+        label.font = .systemFont(ofSize: 16, weight: .regular)
         label.numberOfLines = 0
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
@@ -46,7 +46,7 @@ class CuisinesCell: UICollectionViewCell {
     private lazy var countLabel: UILabel = {
         let label = UILabel()
         label.textColor = .atlasGray
-        label.font = UIFont.systemFont(ofSize: 12, weight: .regular)
+        label.font = .systemFont(ofSize: 12, weight: .regular)
         label.textAlignment = .center
         label.translatesAutoresizingMaskIntoConstraints = false
         return label

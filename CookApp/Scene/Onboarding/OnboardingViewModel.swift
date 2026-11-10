@@ -22,14 +22,19 @@ final class OnboardingViewModel {
                                     title: "Cook step by step",
                                     description: "Follow one clear step at a time, then rate how the dish turned out.")]
     
-    var success: (() -> Void)?
-    var error: ((String) -> Void)?
+    var stateChanged: (() -> Void)?
     
+    private(set) var state: State = .idle {
+        didSet {
+            stateChanged?()
+        }
+    }
+
     var nextCallback: (() -> Void)?
     var finishCallback: (() -> Void)?
     
     var currentIndex = 0
-    let pageCount = 3
+    let pages = OnboardingPage.allCases
 
     init(manager: CuisineManagerUseCase = CuisineManager()) {
         self.manager = manager
@@ -37,9 +42,11 @@ final class OnboardingViewModel {
     }
     
     func getCuisines() {
+        state = .loading
+        
         manager.getCuisines { data, errorMessage in
             if let errorMessage {
-                self.error?(errorMessage)
+                self.state = .error(errorMessage)
             } else if let data {
                 self.cuisines = data
                 
@@ -48,7 +55,7 @@ final class OnboardingViewModel {
                     self.selectedCuisineID.append(firstCuisine.id ?? 0)
                 }
                 
-                self.success?()
+                self.state = .loaded
             }
         }
     }
@@ -73,18 +80,18 @@ final class OnboardingViewModel {
     }
     
     var buttonText: String {
-        switch currentIndex {
-        case 0:
+        switch pages[currentIndex] {
+        case .welcome:
             return "Get Started"
-        case 1:
+        case .cuisines:
             return "Continue"
-        default:
+        case .journey:
             return "Explore CookAtlas"
         }
     }
     
     func nextPage() {
-        if currentIndex == pageCount - 1 {
+        if pages[currentIndex] == .journey {
             completeOnboarding()
         } else {
             currentIndex += 1

@@ -7,10 +7,10 @@
 
 import UIKit
 
-class DetailTytleHeader: UICollectionReusableView {
+class DetailTitleHeader: UICollectionReusableView {
     private lazy var titleLabel: UILabel = {
         let label = UILabel()
-        label.font = UIFont.systemFont(ofSize: 20, weight: .bold)
+        label.font = .systemFont(ofSize: 20, weight: .bold)
         label.textColor = .atlasDark
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
@@ -18,7 +18,7 @@ class DetailTytleHeader: UICollectionReusableView {
     
     private lazy var countLabel: UILabel = {
         let label = UILabel()
-        label.font = UIFont.systemFont(ofSize: 12, weight: .regular)
+        label.font = .systemFont(ofSize: 12, weight: .regular)
         label.textColor = .atlasGray
         label.translatesAutoresizingMaskIntoConstraints = false
         return label

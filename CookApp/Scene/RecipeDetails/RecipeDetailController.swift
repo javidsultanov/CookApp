@@ -6,29 +6,30 @@
 //
 
 import UIKit
+import YouTubePlayerKit
 
 class RecipeDetailController: BaseController {
     private lazy var collection: UICollectionView = {
-            let layout = UICollectionViewFlowLayout()
-            layout.minimumLineSpacing = 8
-            layout.sectionInset = .init(top: 0, left: 0, bottom: 16, right: 0)
-            
-            let collection = UICollectionView(frame: .zero, collectionViewLayout: layout)
-            collection.register(RecipeIngredientsCell.self, forCellWithReuseIdentifier: "\(RecipeIngredientsCell.self)")
-            collection.register(RecipeStepsCell.self, forCellWithReuseIdentifier: "\(RecipeStepsCell.self)")
-            collection.register(RecipeInfoHeader.self,
-                                forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader,
-                                withReuseIdentifier: "\(RecipeInfoHeader.self)")
-        collection.register(DetailTytleHeader.self,
+        let layout = UICollectionViewFlowLayout()
+        layout.minimumLineSpacing = 8
+        layout.sectionInset = .init(top: 0, left: 0, bottom: 16, right: 0)
+        
+        let collection = UICollectionView(frame: .zero, collectionViewLayout: layout)
+        collection.register(RecipeIngredientsCell.self, forCellWithReuseIdentifier: "\(RecipeIngredientsCell.self)")
+        collection.register(RecipeStepsCell.self, forCellWithReuseIdentifier: "\(RecipeStepsCell.self)")
+        collection.register(RecipeInfoHeader.self,
                             forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader,
-                            withReuseIdentifier: "\(DetailTytleHeader.self)")
-            collection.delegate = self
-            collection.dataSource = self
-            collection.backgroundColor = .clear
-            collection.showsVerticalScrollIndicator = false
-            collection.translatesAutoresizingMaskIntoConstraints = false
-            return collection
-        }()
+                            withReuseIdentifier: "\(RecipeInfoHeader.self)")
+        collection.register(DetailTitleHeader.self,
+                            forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader,
+                            withReuseIdentifier: "\(DetailTitleHeader.self)")
+        collection.delegate = self
+        collection.dataSource = self
+        collection.backgroundColor = .clear
+        collection.showsVerticalScrollIndicator = false
+        collection.translatesAutoresizingMaskIntoConstraints = false
+        return collection
+    }()
     
     private lazy var youtubeButton: UIButton = {
         let button = UIButton()
@@ -48,6 +49,14 @@ class RecipeDetailController: BaseController {
                                                   target: self,
                                                   action: #selector(saveButtonTapped))
     
+    private let loadingView: UIActivityIndicatorView = {
+        let view = UIActivityIndicatorView(style: .large)
+        view.color = .atlasOrange
+        view.hidesWhenStopped = true
+        view.translatesAutoresizingMaskIntoConstraints = false
+        return view
+    }()
+    
     private let viewModel: RecipeDetailViewModel
     
     init(viewModel: RecipeDetailViewModel) {
@@ -65,7 +74,7 @@ class RecipeDetailController: BaseController {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        viewModel.getSavedRecipes()
+        viewModel.checkSaved()
     }
     
     override func configureUI() {
@@ -77,6 +86,7 @@ class RecipeDetailController: BaseController {
     override func configureConstraints() {
         view.addSubview(collection)
         view.addSubview(youtubeButton)
+        view.addSubview(loadingView)
         
         NSLayoutConstraint.activate([
             collection.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
@@ -86,28 +96,58 @@ class RecipeDetailController: BaseController {
             
             youtubeButton.leadingAnchor.constraint(equalTo: collection.leadingAnchor),
             youtubeButton.trailingAnchor.constraint(equalTo: collection.trailingAnchor),
-            youtubeButton.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -8),
-            youtubeButton.heightAnchor.constraint(equalToConstant: 52)
+            youtubeButton.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor),
+            youtubeButton.heightAnchor.constraint(equalToConstant: 52),
+            
+            loadingView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            loadingView.centerYAnchor.constraint(equalTo: view.centerYAnchor)
         ])
     }
-    
-    override func configureViewModel() {
-        viewModel.success = { [weak self] in
-            self?.navigationItem.title = self?.viewModel.recipeDetail?.title
-            self?.collection.reloadData()
-            self?.configureSaveButton()
-        }
         
-        viewModel.error = { errorMessage in
-            print(errorMessage)
+    override func configureViewModel() {
+        viewModel.stateChanged = { [weak self] in
+            self?.configureState()
         }
         
         viewModel.getRecipeDetail()
     }
     
+    override func configureState() {
+        switch viewModel.state {
+        case .idle:
+            break
+        case .loading:
+            startLoading()
+        case .loaded:
+            stopLoading()
+            navigationItem.title = viewModel.recipeDetail?.title
+            collection.reloadData()
+            configureSaveButton()
+        case .error(let errorMessage):
+            stopLoading()
+            showDefaultAlert(title: "Error", message: errorMessage)
+        }
+    }
+    
+    override func startLoading() {
+        view.bringSubviewToFront(loadingView)
+        loadingView.startAnimating()
+    }
+    
+    override func stopLoading() {
+        loadingView.stopAnimating()
+    }
+    
     @objc private func youtubeButtonTapped() {
-        guard let url = URL(string: viewModel.youtubeLink) else { return }
-        UIApplication.shared.open(url)
+        guard let url = viewModel.youtubeLink else { return }
+        
+        guard let source = YouTubePlayer.Source(url: url) else {
+            UIApplication.shared.open(url)
+            return
+        }
+        
+        let player = YouTubePlayer(source: source, parameters: .init(autoPlay: true))
+        present(YouTubePlayerViewController(player: player), animated: true)
     }
     
     @objc private func saveButtonTapped() {
@@ -121,15 +161,21 @@ class RecipeDetailController: BaseController {
 
 extension RecipeDetailController: CollectionConfiguration {
     func numberOfSections(in collectionView: UICollectionView) -> Int {
-        viewModel.recipeDetail == nil ? 0 : 2
+        viewModel.recipeDetail == nil ? 0 : viewModel.sections.count
     }
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        section == 0 ? viewModel.ingredients.count : viewModel.steps.count
+        switch viewModel.sections[section] {
+        case .ingredients:
+            return viewModel.ingredients.count
+        case .instructions:
+            return viewModel.steps.count
+        }
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        if indexPath.section == 0 {
+        switch viewModel.sections[indexPath.section] {
+        case .ingredients:
             guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "\(RecipeIngredientsCell.self)",
                                                                 for: indexPath) as? RecipeIngredientsCell else {
                 return UICollectionViewCell()
@@ -137,19 +183,21 @@ extension RecipeDetailController: CollectionConfiguration {
             
             cell.configure(data: viewModel.ingredients[indexPath.item])
             return cell
+            
+        case .instructions:
+            guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "\(RecipeStepsCell.self)",
+                                                                for: indexPath) as? RecipeStepsCell else {
+                return UICollectionViewCell()
+            }
+            
+            cell.configure(step: viewModel.steps[indexPath.item])
+            return cell
         }
-        
-        guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "\(RecipeStepsCell.self)",
-                                                            for: indexPath) as? RecipeStepsCell else {
-            return UICollectionViewCell()
-        }
-        
-        cell.configure(step: viewModel.steps[indexPath.item])
-        return cell
     }
     
     func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
-        if indexPath.section == 0 {
+        switch viewModel.sections[indexPath.section] {
+        case .ingredients:
             guard let header = collectionView.dequeueReusableSupplementaryView(ofKind: kind,
                                                                                withReuseIdentifier: "\(RecipeInfoHeader.self)",
                                                                                for: indexPath) as? RecipeInfoHeader,
@@ -159,23 +207,34 @@ extension RecipeDetailController: CollectionConfiguration {
             
             header.configure(data: recipe)
             return header
+            
+        case .instructions:
+            guard let header = collectionView.dequeueReusableSupplementaryView(ofKind: kind,
+                                                                               withReuseIdentifier: "\(DetailTitleHeader.self)",
+                                                                               for: indexPath) as? DetailTitleHeader else {
+                return UICollectionReusableView()
+            }
+            
+            header.configure(title: "Instructions", count: "\(viewModel.steps.count) steps")
+            return header
         }
-        
-        guard let header = collectionView.dequeueReusableSupplementaryView(ofKind: kind,
-                                                                           withReuseIdentifier: "\(DetailTytleHeader.self)",
-                                                                           for: indexPath) as? DetailTytleHeader else {
-            return UICollectionReusableView()
-        }
-        
-        header.configure(title: "Instructions", count: "\(viewModel.steps.count) steps")
-        return header
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, referenceSizeForHeaderInSection section: Int) -> CGSize {
-        .init(width: collectionView.frame.width, height: section == 0 ? 440 : 48)
+        switch viewModel.sections[section] {
+        case .ingredients:
+            return .init(width: collectionView.frame.width, height: 440)
+        case .instructions:
+            return .init(width: collectionView.frame.width, height: 48)
+        }
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        .init(width: collectionView.frame.width, height: indexPath.section == 0 ? 64 : 84)
+        switch viewModel.sections[indexPath.section] {
+        case .ingredients:
+            return .init(width: collectionView.frame.width, height: 64)
+        case .instructions:
+            return .init(width: collectionView.frame.width, height: 84)
+        }
     }
 }
