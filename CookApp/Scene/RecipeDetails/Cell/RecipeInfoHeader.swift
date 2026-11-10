@@ -20,7 +20,7 @@ class RecipeInfoHeader: UICollectionReusableView {
     
     private lazy var titleLabel: UILabel = {
         let label = UILabel()
-        label.font = UIFont.systemFont(ofSize: 24, weight: .bold)
+        label.font = .systemFont(ofSize: 24, weight: .bold)
         label.textColor = .atlasDark
         label.numberOfLines = 0
         label.translatesAutoresizingMaskIntoConstraints = false
@@ -29,7 +29,7 @@ class RecipeInfoHeader: UICollectionReusableView {
     
     private lazy var infoLabel: UILabel = {
         let label = UILabel()
-        label.font = UIFont.systemFont(ofSize: 12, weight: .regular)
+        label.font = .systemFont(ofSize: 12, weight: .regular)
         label.textColor = .atlasGray
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
@@ -37,22 +37,22 @@ class RecipeInfoHeader: UICollectionReusableView {
     
     private lazy var difficultyLabel: UILabel = {
         let label = UILabel()
-        label.font = UIFont.systemFont(ofSize: 16, weight: .bold)
+        label.font = .systemFont(ofSize: 16, weight: .bold)
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
     
     private lazy var descriptionLabel: UILabel = {
         let label = UILabel()
-        label.font = UIFont.systemFont(ofSize: 12, weight: .regular)
+        label.font = .systemFont(ofSize: 12, weight: .regular)
         label.textColor = .atlasDark
         label.numberOfLines = 0
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
     
-    private lazy var detailHeader: DetailTytleHeader = {
-        let header = DetailTytleHeader()
+    private lazy var detailHeader: DetailTitleHeader = {
+        let header = DetailTitleHeader()
         header.translatesAutoresizingMaskIntoConstraints = false
         return header
     }()

@@ -9,5 +9,5 @@ import Foundation
 
 protocol IngredientManagerUseCase {
     func getIngredients(completion: @escaping(([Ingredient]?, String?) -> Void))
-    func getIngredientRecipes(id: Int, completion: @escaping(([IngredientRecipe]?, String?) -> Void))
+    func getIngredientRecipes(id: Int, completion: @escaping(([RecipeCard]?, String?) -> Void))
 }

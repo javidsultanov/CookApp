@@ -11,7 +11,6 @@ final class CuisineRecipesViewModel {
     var manager: RecipeManagerUseCase
     let cuisine: Cuisine
     var sections: [DifficultySection] = []
-    var savedIDs: [Int] = []
     
     init(manager: RecipeManagerUseCase = RecipeManager(), cuisine: Cuisine) {
         self.manager = manager
@@ -21,29 +20,32 @@ final class CuisineRecipesViewModel {
     
     private let dataBaseManager = RecipeDataBaseManager()
     
-    var success: (() -> Void)?
-    var error: ((String) -> Void)?
+    var stateChanged: (() -> Void)?
     
+    private(set) var state: State = .idle {
+        didSet {
+            stateChanged?()
+        }
+    }
+
     func getCuisineRecipes() {
+        state = .loading
+        
         manager.getCuisineRecipes(id: cuisine.id ?? 0) { data, errorMessage in
             if let errorMessage {
-                self.error?(errorMessage)
+                self.state = .error(errorMessage)
             } else if let data {
                 self.sections = Difficulty.allCases.compactMap({ difficultyLevel in
                     let recipes = data.filter({ $0.difficulty == difficultyLevel.rawValue })
                     return recipes.isEmpty ? nil : DifficultySection(difficultyLevel: difficultyLevel, recipes: recipes)
                 })
-                self.success?()
+                self.state = .loaded
             }
         }
     }
-    
-    func getSavedRecipes() {
-        dataBaseManager.getRecipes()
-    }
-    
+        
     func isSaved(recipe: RecipeCard) -> Bool {
-        savedIDs.contains(recipe.id ?? 0)
+        dataBaseManager.isSaved(recipeID: recipe.id ?? 0)
     }
     
     func saveButtonTapped(recipe: RecipeCard) {
@@ -55,23 +57,16 @@ final class CuisineRecipesViewModel {
     }
     
     func configureDataBaseManager() {
-        dataBaseManager.fetchCallback = { recipes in
-            self.savedIDs = recipes.map({ Int($0.recipeID) })
-            self.success?()
-        }
-        
         dataBaseManager.saveCallback = { recipe in
-            self.savedIDs.append(Int(recipe.recipeID))
-            self.success?()
+            self.stateChanged?()
         }
         
         dataBaseManager.deleteCallback = { recipeID in
-            self.savedIDs.removeAll (where: { $0 == recipeID })
-            self.success?()
+            self.stateChanged?()
         }
         
         dataBaseManager.errorCallback = { errorMessage in
-            self.error?(errorMessage)
+            self.state = .error(errorMessage)
         }
     }
 }

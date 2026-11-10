@@ -14,7 +14,7 @@ class IngredientManager: IngredientManagerUseCase {
         manager.request(model: [Ingredient].self, endpoint: IngredientEndpoint.ingredientList.path, completion: completion)
     }
     
-    func getIngredientRecipes(id: Int, completion: @escaping ([IngredientRecipe]?, String?) -> Void) {
-        manager.request(model: [IngredientRecipe].self, endpoint: IngredientEndpoint.ingredientRecipes(id: id).path, completion: completion)
+    func getIngredientRecipes(id: Int, completion: @escaping ([RecipeCard]?, String?) -> Void) {
+        manager.request(model: [RecipeCard].self, endpoint: IngredientEndpoint.ingredientRecipes(id: id).path, completion: completion)
     }
 }

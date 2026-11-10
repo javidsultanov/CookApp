@@ -24,7 +24,7 @@ enum RecipeEndpoint {
             let ids = cuisinesID.map({ "\($0)" }).joined(separator: ",")
             return CoreHelper.shared.configureURL(endpoint: "recipe_cards?cuisine_id=in.(\(ids))&order=difficulty_level,title")
         case .recipeDetail(id: let id):
-            return CoreHelper.shared.configureURL(endpoint: "recipes?select=id,title,description,category,difficulty,cook_time_minutes,servings,instructions,image_url,youtube_url,cuisine:cuisines(id,name,flag_emoji),ingredients:recipe_ingredients(measure,position,ingredient:ingredients(id,name,category,image_url))&id=eq.\(id)&ingredients.order=position")
+            return CoreHelper.shared.configureURL(endpoint: "recipe_details?id=eq.\(id)")
         }
     }
 }

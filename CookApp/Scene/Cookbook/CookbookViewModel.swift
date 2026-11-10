@@ -16,11 +16,18 @@ final class CookbookViewModel {
         configureDataBaseManager()
     }
     
-    var success: (() -> Void)?
-    var error: ((String) -> Void)?
+    var stateChanged: (() -> Void)?
+    
+    private(set) var state: State = .idle {
+        didSet {
+            stateChanged?()
+        }
+    }
     
     func getRecipes() {
-        manager.getRecipes()
+        state = .loading
+        recipes = manager.getSavedRecipes()
+        state = .loaded
     }
     
     func deleteRecipes(recipeID: Int) {
@@ -28,18 +35,13 @@ final class CookbookViewModel {
     }
     
     private func configureDataBaseManager() {
-        manager.fetchCallback = { recipes in
-            self.recipes = recipes
-            self.success?()
-        }
-        
         manager.deleteCallback = { recipeID in
             self.recipes.removeAll(where: { Int($0.recipeID) == recipeID })
-            self.success?()
+            self.stateChanged?()
         }
         
         manager.errorCallback = { errorMessage in
-            self.error?(errorMessage)
+            self.state = .error(errorMessage)
         }
     }
 }

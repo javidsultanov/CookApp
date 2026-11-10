@@ -10,23 +10,30 @@ import Foundation
 final class IngredientsViewModel {
     var manager: IngredientManagerUseCase
     
+    init(manager: IngredientManagerUseCase = IngredientManager()) {
+        self.manager = manager
+    }
+    
     var ingredients: [Ingredient] = []
     var filteredIngredients: [Ingredient] = []
     var categories: [String] = []
     var selectedCategoryIndex: Int?
     var searchText = ""
+        
+    var stateChanged: (() -> Void)?
     
-    init(manager: IngredientManagerUseCase = IngredientManager()) {
-        self.manager = manager
+    private(set) var state: State = .idle {
+        didSet {
+            stateChanged?()
+        }
     }
-    
-    var success: (() -> Void)?
-    var error: ((String) -> Void)?
-    
+
     func getIngredients() {
+        state = .loading
+        
         manager.getIngredients { data, errorMessage in
             if let errorMessage {
-                self.error?(errorMessage)
+                self.state = .error(errorMessage)
             } else if let data {
                 self.ingredients = data
                 self.filteredIngredients = data
@@ -39,7 +46,7 @@ final class IngredientsViewModel {
                 }
                 self.categories.sort()
                 
-                self.success?()
+                self.state = .loaded
             }
         }
     }

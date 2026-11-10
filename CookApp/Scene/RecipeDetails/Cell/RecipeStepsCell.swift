@@ -10,7 +10,7 @@ import UIKit
 class RecipeStepsCell: UICollectionViewCell {
     private lazy var stepLabel: UILabel = {
         let label = UILabel()
-        label.font = UIFont.systemFont(ofSize: 16, weight: .regular)
+        label.font = .systemFont(ofSize: 16, weight: .regular)
         label.textColor = .atlasDark
         label.numberOfLines = 0
         label.translatesAutoresizingMaskIntoConstraints = false

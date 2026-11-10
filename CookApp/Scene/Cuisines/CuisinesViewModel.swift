@@ -15,18 +15,25 @@ final class CuisinesViewModel {
         self.manager = manager
     }
     
-    var success: (() -> Void)?
-    var error: ((String) -> Void)?
+    var stateChanged: (() -> Void)?
+    
+    private(set) var state: State = .idle {
+        didSet {
+            stateChanged?()
+        }
+    }
     
     func getCuisines() {
+        state = .loading
+        
         manager.getCuisines { data, errorMessage in
             if let errorMessage {
-                self.error?(errorMessage)
+                self.state = .error(errorMessage)
             } else if let data {
                 let favoriteCuisines = data.filter({ self.isFavorite(cuisine: $0) })
                 let otherCuisines = data.filter({ !self.isFavorite(cuisine: $0) })
                 self.cuisines = favoriteCuisines + otherCuisines
-                self.success?()
+                self.state = .loaded
             }
         }
     }

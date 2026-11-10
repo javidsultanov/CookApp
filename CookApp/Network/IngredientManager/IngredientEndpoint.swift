@@ -14,9 +14,9 @@ enum IngredientEndpoint {
     var path: String {
         switch self {
         case .ingredientList:
-            return CoreHelper.shared.configureURL(endpoint: "ingredients?select=id,name,category,image_url,recipe_ingredients(count)&order=name")
+            return CoreHelper.shared.configureURL(endpoint: "ingredient_list?order=name")
         case .ingredientRecipes(let id):
-            return CoreHelper.shared.configureURL(endpoint: "recipe_ingredients?select=recipe:recipe_cards(*)&ingredient_id=eq.\(id)")
+            return CoreHelper.shared.configureURL(endpoint: "ingredient_recipes?ingredient_id=eq.\(id)&order=difficulty_level,title")
         }
     }
 }

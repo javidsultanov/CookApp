@@ -11,7 +11,7 @@ class CookbookController: BaseController {
     private lazy var collection: UICollectionView = {
         let layout = UICollectionViewFlowLayout()
         layout.minimumLineSpacing = 12
-        layout.sectionInset = .init(top: 8, left: 0, bottom: 16, right: 0)
+        layout.sectionInset = .init(top: 0, left: 0, bottom: 16, right: 0)
         
         let collection = UICollectionView(frame: .zero, collectionViewLayout: layout)
         collection.register(CuisineRecipesCell.self, forCellWithReuseIdentifier: "\(CuisineRecipesCell.self)")
@@ -32,6 +32,14 @@ class CookbookController: BaseController {
         label.isHidden = true
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
+    }()
+    
+    private let loadingView: UIActivityIndicatorView = {
+        let view = UIActivityIndicatorView(style: .large)
+        view.color = .atlasOrange
+        view.hidesWhenStopped = true
+        view.translatesAutoresizingMaskIntoConstraints = false
+        return view
     }()
     
     private let viewModel = CookbookViewModel()
@@ -58,6 +66,7 @@ class CookbookController: BaseController {
     override func configureConstraints() {
         view.addSubview(collection)
         view.addSubview(emptyLabel)
+        view.addSubview(loadingView)
         
         NSLayoutConstraint.activate([
             collection.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
@@ -67,20 +76,43 @@ class CookbookController: BaseController {
             
             emptyLabel.centerYAnchor.constraint(equalTo: view.centerYAnchor),
             emptyLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-            emptyLabel.widthAnchor.constraint(equalTo: view.widthAnchor, multiplier: 0.80)
+            emptyLabel.widthAnchor.constraint(equalTo: view.widthAnchor, multiplier: 0.80),
+            
+            loadingView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            loadingView.centerYAnchor.constraint(equalTo: view.centerYAnchor)
         ])
     }
     
+    override func startLoading() {
+        view.bringSubviewToFront(loadingView)
+        loadingView.startAnimating()
+    }
+    
+    override func stopLoading() {
+        loadingView.stopAnimating()
+    }
+    
     override func configureViewModel() {
-        viewModel.success = { [weak self] in
-            guard let self else { return }
+        viewModel.stateChanged = { [weak self] in
+            self?.configureState()
+        }
+    }
+    
+    override func configureState() {
+        switch viewModel.state {
+        case .idle:
+            break
+        case .loading:
+            startLoading()
+        case .loaded:
+            stopLoading()
             emptyLabel.isHidden = !viewModel.recipes.isEmpty
             collection.reloadData()
             refreshControl.endRefreshing()
-        }
-        
-        viewModel.error = { errorMessage in
-            print(errorMessage)
+        case .error(let errorMessage):
+            stopLoading()
+            refreshControl.endRefreshing()
+            showDefaultAlert(title: "Error", message: errorMessage)
         }
     }
     
