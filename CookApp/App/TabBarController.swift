@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import SwiftUI
 
 class TabBarController: UITabBarController {
 
@@ -16,11 +17,12 @@ class TabBarController: UITabBarController {
     }
     
     private func configureUI() {
-        let discoverController = DiscoverController()
-        discoverController.tabBarItem = .init(title: "Discover",
-                                              image: .init(systemName: "safari"),
-                                              tag: 0)
-        let discoverNavigation = UINavigationController(rootViewController: discoverController)
+        let discoverView = UIHostingController(rootView: DiscoverView())
+        discoverView.navigationItem.title = "Discover"
+        discoverView.tabBarItem = .init(title: "Discover",
+                                        image: .init(systemName: "safari"),
+                                        tag: 0)
+        let discoverNavigation = UINavigationController(rootViewController: discoverView)
         
         let recipesController = RecipesController()
         recipesController.tabBarItem = .init(title: "Recipes",
