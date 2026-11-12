@@ -20,7 +20,7 @@ final class RecipesViewModel {
     
     var stateChanged: (() -> Void)?
     
-    private(set) var state: State = .idle {
+    private(set) var state: ViewState = .idle {
         didSet {
             stateChanged?()
         }
