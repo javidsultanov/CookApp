@@ -10,10 +10,14 @@
 		61998A18307CE98D000C1104 /* Alamofire in Frameworks */ = {isa = PBXBuildFile; productRef = 61998A17307CE98D000C1104 /* Alamofire */; };
 		61998A1B307CE999000C1104 /* Kingfisher in Frameworks */ = {isa = PBXBuildFile; productRef = 61998A1A307CE999000C1104 /* Kingfisher */; };
 		619E0FEE30A2F6540099E4F7 /* YouTubePlayerKit in Frameworks */ = {isa = PBXBuildFile; productRef = 619E0FED30A2F6540099E4F7 /* YouTubePlayerKit */; };
+		619E13E530A7247F0099E4F7 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 619E13E430A7247F0099E4F7 /* GoogleService-Info.plist */; };
+		619E13E830A724FE0099E4F7 /* FirebaseAnalytics in Frameworks */ = {isa = PBXBuildFile; productRef = 619E13E730A724FE0099E4F7 /* FirebaseAnalytics */; };
+		619E13EA30A724FE0099E4F7 /* FirebaseCrashlytics in Frameworks */ = {isa = PBXBuildFile; productRef = 619E13E930A724FE0099E4F7 /* FirebaseCrashlytics */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
 		6199898A307AC436000C1104 /* CookApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = CookApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		619E13E430A7247F0099E4F7 /* GoogleService-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
@@ -43,6 +47,8 @@
 			files = (
 				61998A1B307CE999000C1104 /* Kingfisher in Frameworks */,
 				61998A18307CE98D000C1104 /* Alamofire in Frameworks */,
+				619E13EA30A724FE0099E4F7 /* FirebaseCrashlytics in Frameworks */,
+				619E13E830A724FE0099E4F7 /* FirebaseAnalytics in Frameworks */,
 				619E0FEE30A2F6540099E4F7 /* YouTubePlayerKit in Frameworks */,
 			);
 		};
@@ -52,6 +58,7 @@
 		61998981307AC436000C1104 = {
 			isa = PBXGroup;
 			children = (
+				619E13E430A7247F0099E4F7 /* GoogleService-Info.plist */,
 				6199898C307AC436000C1104 /* CookApp */,
 				6199898B307AC436000C1104 /* Products */,
 			);
@@ -75,6 +82,7 @@
 				61998986307AC436000C1104 /* Sources */,
 				61998987307AC436000C1104 /* Frameworks */,
 				61998988307AC436000C1104 /* Resources */,
+				619E13EB30A733BE0099E4F7 /* ShellScript */,
 			);
 			buildRules = (
 			);
@@ -86,6 +94,8 @@
 				61998A17307CE98D000C1104 /* Alamofire */,
 				61998A1A307CE999000C1104 /* Kingfisher */,
 				619E0FED30A2F6540099E4F7 /* YouTubePlayerKit */,
+				619E13E730A724FE0099E4F7 /* FirebaseAnalytics */,
+				619E13E930A724FE0099E4F7 /* FirebaseCrashlytics */,
 			);
 			productName = CookApp;
 			productReference = 6199898A307AC436000C1104 /* CookApp.app */;
@@ -119,6 +129,7 @@
 				61998A16307CE98D000C1104 /* XCRemoteSwiftPackageReference "Alamofire" */,
 				61998A19307CE999000C1104 /* XCRemoteSwiftPackageReference "Kingfisher" */,
 				619E0FEC30A2F6540099E4F7 /* XCRemoteSwiftPackageReference "YouTubePlayerKit" */,
+				619E13E630A724FE0099E4F7 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */,
 			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = 6199898B307AC436000C1104 /* Products */;
@@ -134,9 +145,29 @@
 		61998988307AC436000C1104 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			files = (
+				619E13E530A7247F0099E4F7 /* GoogleService-Info.plist in Resources */,
 			);
 		};
 /* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		619E13EB30A733BE0099E4F7 /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			alwaysOutOfDate = 1;
+			inputPaths = (
+				"${DWARF_DSYM_FOLDER_PATH}/${DWARF_DSYM_FILE_NAME}",
+				"${DWARF_DSYM_FOLDER_PATH}/${DWARF_DSYM_FILE_NAME}/Contents/Resources/DWARF/${PRODUCT_NAME}",
+				"${DWARF_DSYM_FOLDER_PATH}/${DWARF_DSYM_FILE_NAME}/Contents/Info.plist",
+				"$(TARGET_BUILD_DIR)/$(UNLOCALIZED_RESOURCES_FOLDER_PATH)/GoogleService-Info.plist",
+				"$(TARGET_BUILD_DIR)/$(EXECUTABLE_PATH)",
+			);
+			shellPath = /bin/sh;
+			shellScript = (
+				"\"${BUILD_DIR%/Build/*}/SourcePackages/checkouts/firebase-ios-sdk/Crashlytics/run\"",
+				"",
+			);
+		};
+/* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		61998986307AC436000C1104 /* Sources */ = {
@@ -154,6 +185,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = CookApp/Info.plist;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
@@ -376,6 +408,14 @@
 				minimumVersion = 2.0.5;
 			};
 		};
+		619E13E630A724FE0099E4F7 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/firebase/firebase-ios-sdk";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 13.1.1;
+			};
+		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
@@ -393,6 +433,16 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 619E0FEC30A2F6540099E4F7 /* XCRemoteSwiftPackageReference "YouTubePlayerKit" */;
 			productName = YouTubePlayerKit;
+		};
+		619E13E730A724FE0099E4F7 /* FirebaseAnalytics */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 619E13E630A724FE0099E4F7 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseAnalytics;
+		};
+		619E13E930A724FE0099E4F7 /* FirebaseCrashlytics */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 619E13E630A724FE0099E4F7 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseCrashlytics;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};
