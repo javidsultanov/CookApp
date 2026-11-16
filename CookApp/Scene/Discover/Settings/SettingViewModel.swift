@@ -19,7 +19,10 @@ final class SettingViewModel {
     var cuisines: [Cuisine] = []
     var favoriteCuisinesID: [Int] = UserDefaultsHelper.shared.favoriteCuisinesID
     var savedCount = 0
-    var state: ViewState = .idle
+    
+    private(set) var state: ViewState = .idle
+    
+    var showError = false
     
     var recipeCount: Int {
         var count = 0
@@ -30,12 +33,21 @@ final class SettingViewModel {
         return count
     }
     
+    var savedText: String {
+        if savedCount == 1 {
+            return "1 saved recipe"
+        }
+        
+        return "\(savedCount) saved recipes"
+    }
+    
     func getCuisines() {
         state = .loading
         
         manager.getCuisines { data, errorMessage in
             if let errorMessage {
                 self.state = .error(errorMessage)
+                self.showError = true
             } else if let data {
                 self.cuisines = data
                 self.state = .loaded

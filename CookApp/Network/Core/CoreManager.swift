@@ -26,11 +26,12 @@ class CoreManager {
                     let decodedData = try JSONDecoder().decode(T.self, from: data)
                     completion(decodedData, nil)
                 } catch {
+                    FireBaseManager.shared.recordError(message: error.localizedDescription, endpoint: endpoint)
                     completion(nil, error.localizedDescription)
                 }
             case .failure(let error):
-                let errorMessage = error.localizedDescription
-                completion(nil, errorMessage)
+                FireBaseManager.shared.recordError(message: error.localizedDescription, endpoint: endpoint)
+                completion(nil, error.localizedDescription)
             }
         }
     }
