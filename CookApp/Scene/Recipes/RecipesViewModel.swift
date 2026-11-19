@@ -9,14 +9,16 @@ import Foundation
 
 final class RecipesViewModel {
     var manager: RecipeManagerUseCase
-    var sections: [DifficultySection] = []
     
     init(manager: RecipeManagerUseCase = RecipeManager()) {
         self.manager = manager
         configureDataBaseManager()
     }
     
+    var sections: [DifficultySection] = []
+    
     private let dataBaseManager = RecipeDataBaseManager()
+    private var loadedCuisinesID: [Int]?
     
     var stateChanged: (() -> Void)?
     
@@ -27,17 +29,34 @@ final class RecipesViewModel {
     }
     
     func getRecipes() {
+        let cuisinesID = UserDefaultsHelper.shared.favoriteCuisinesID
+        guard cuisinesID != loadedCuisinesID else { return }
         state = .loading
         
-        manager.getRecipes(cuisinesID: UserDefaultsHelper.shared.favoriteCuisinesID) { data, errorMessage in
-            if let errorMessage {
-                self.state = .error(errorMessage)
-            } else if let data {
-                self.sections = Difficulty.allCases.compactMap({ difficultyLevel in
+//        manager.getRecipes(cuisinesID: UserDefaultsHelper.shared.favoriteCuisinesID) { data, errorMessage in
+//            if let errorMessage {
+//                self.state = .error(errorMessage)
+//            } else if let data {
+//                self.sections = Difficulty.allCases.compactMap({ difficultyLevel in
+//                    let recipes = data.filter({ $0.difficulty == difficultyLevel.rawValue })
+//                    return recipes.isEmpty ? nil : DifficultySection(difficultyLevel: difficultyLevel, recipes: recipes)
+//                })
+//                self.state = .loaded
+//            }
+//        }
+        
+        Task {
+            do {
+                let data = try await manager.getRecipes(cuisinesID: UserDefaultsHelper.shared.favoriteCuisinesID)
+                sections = Difficulty.allCases.compactMap({ difficultyLevel in
                     let recipes = data.filter({ $0.difficulty == difficultyLevel.rawValue })
                     return recipes.isEmpty ? nil : DifficultySection(difficultyLevel: difficultyLevel, recipes: recipes)
                 })
-                self.state = .loaded
+                loadedCuisinesID = cuisinesID
+                
+                state = .loaded
+            } catch {
+                state = .error(error.localizedDescription)
             }
         }
     }

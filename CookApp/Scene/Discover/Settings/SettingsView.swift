@@ -97,7 +97,7 @@ struct SettingsView: View {
                     }
                     
                     VStack {
-                        Text("C.C · Cool Coding programs")
+                        Text("C.C. · Cool Coding programs")
                             .foregroundStyle(.atlasDark)
                         Text("Forged at SAS Tech Academy")
                             .foregroundStyle(.atlasGray)
@@ -119,8 +119,10 @@ struct SettingsView: View {
         }
         .background(.atlasCream)
         .navigationTitle("Settings")
+        .task {
+            await viewModel.getCuisines()
+        }
         .onAppear {
-            viewModel.getCuisines()
             viewModel.getSavedCount()
         }
     }

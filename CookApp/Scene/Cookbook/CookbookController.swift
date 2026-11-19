@@ -22,18 +22,6 @@ class CookbookController: BaseController {
         return collection
     }()
     
-    private lazy var emptyLabel: UILabel = {
-        let label = UILabel()
-        label.text = "No saved recipes yet.\nTap the bookmark on any recipe to save it here."
-        label.textColor = .atlasGray
-        label.font = UIFont.systemFont(ofSize: 16, weight: .regular)
-        label.textAlignment = .center
-        label.numberOfLines = 0
-        label.isHidden = true
-        label.translatesAutoresizingMaskIntoConstraints = false
-        return label
-    }()
-    
     private let loadingView: UIActivityIndicatorView = {
         let view = UIActivityIndicatorView(style: .large)
         view.color = .atlasOrange
@@ -65,7 +53,6 @@ class CookbookController: BaseController {
     
     override func configureConstraints() {
         view.addSubview(collection)
-        view.addSubview(emptyLabel)
         view.addSubview(loadingView)
         
         NSLayoutConstraint.activate([
@@ -73,10 +60,6 @@ class CookbookController: BaseController {
             collection.centerXAnchor.constraint(equalTo: view.centerXAnchor),
             collection.widthAnchor.constraint(equalTo: view.widthAnchor, multiplier: 0.96),
             collection.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor),
-            
-            emptyLabel.centerYAnchor.constraint(equalTo: view.centerYAnchor),
-            emptyLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-            emptyLabel.widthAnchor.constraint(equalTo: view.widthAnchor, multiplier: 0.80),
             
             loadingView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
             loadingView.centerYAnchor.constraint(equalTo: view.centerYAnchor)
@@ -106,9 +89,13 @@ class CookbookController: BaseController {
             startLoading()
         case .loaded:
             stopLoading()
-            emptyLabel.isHidden = !viewModel.recipes.isEmpty
             collection.reloadData()
             refreshControl.endRefreshing()
+            
+            if viewModel.recipes.isEmpty {
+                showDefaultAlert(title: "No Saved Recipes",
+                                 message: "Tap the bookmark on any recipe to save it to your Cookbook.")
+            }
         case .error(let errorMessage):
             stopLoading()
             refreshControl.endRefreshing()

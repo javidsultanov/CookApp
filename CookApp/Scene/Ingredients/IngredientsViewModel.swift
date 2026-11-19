@@ -31,22 +31,42 @@ final class IngredientsViewModel {
     func getIngredients() {
         state = .loading
         
-        manager.getIngredients { data, errorMessage in
-            if let errorMessage {
-                self.state = .error(errorMessage)
-            } else if let data {
-                self.ingredients = data
-                self.filteredIngredients = data
+//        manager.getIngredients { data, errorMessage in
+//            if let errorMessage {
+//                self.state = .error(errorMessage)
+//            } else if let data {
+//                self.ingredients = data
+//                self.filteredIngredients = data
+//                
+//                self.categories = []
+//                for ingredient in data {
+//                    if let category = ingredient.category, !self.categories.contains(category) {
+//                        self.categories.append(category)
+//                    }
+//                }
+//                self.categories.sort()
+//                
+//                self.state = .loaded
+//            }
+//        }
+        
+        Task {
+            do {
+                let data = try await manager.getIngredients()
+                ingredients = data
+                filteredIngredients = data
                 
-                self.categories = []
+                categories = []
                 for ingredient in data {
-                    if let category = ingredient.category, !self.categories.contains(category) {
-                        self.categories.append(category)
+                    if let category = ingredient.category, !categories.contains(category) {
+                        categories.append(category)
                     }
                 }
-                self.categories.sort()
+                categories.sort()
                 
-                self.state = .loaded
+                state = .loaded
+            } catch {
+                state = .error(error.localizedDescription)
             }
         }
     }

@@ -44,18 +44,34 @@ final class OnboardingViewModel {
     func getCuisines() {
         state = .loading
         
-        manager.getCuisines { data, errorMessage in
-            if let errorMessage {
-                self.state = .error(errorMessage)
-            } else if let data {
-                self.cuisines = data
+//        manager.getCuisines { data, errorMessage in
+//            if let errorMessage {
+//                self.state = .error(errorMessage)
+//            } else if let data {
+//                self.cuisines = data
+//                
+//                if self.selectedCuisineID.isEmpty,
+//                   let firstCuisine = self.cuisines.first {
+//                    self.selectedCuisineID.append(firstCuisine.id ?? 0)
+//                }
+//                
+//                self.state = .loaded
+//            }
+//        }
+        
+        Task {
+            do {
+                let data = try await manager.getCuisines()
+                cuisines = data
                 
-                if self.selectedCuisineID.isEmpty,
-                   let firstCuisine = self.cuisines.first {
-                    self.selectedCuisineID.append(firstCuisine.id ?? 0)
+                if selectedCuisineID.isEmpty,
+                   let firstCuisine = cuisines.first {
+                    selectedCuisineID.append(firstCuisine.id ?? 0)
                 }
                 
-                self.state = .loaded
+                state = .loaded
+            } catch {
+                state = .error(error.localizedDescription)
             }
         }
     }

@@ -51,12 +51,23 @@ class RecipeDetailViewModel {
     func getRecipeDetail() {
         state = .loading
         
-        manager.getRecipeDetails(id: id) { data, errorMessage in
-            if let errorMessage {
-                self.state = .error(errorMessage)
-            } else if let data {
-                self.recipeDetail = data.first
-                self.state = .loaded
+//        manager.getRecipeDetails(id: id) { data, errorMessage in
+//            if let errorMessage {
+//                self.state = .error(errorMessage)
+//            } else if let data {
+//                self.recipeDetail = data.first
+//                self.state = .loaded
+//            }
+//        }
+        
+        Task {
+            do {
+                let data = try await manager.getRecipeDetails(id: id)
+                recipeDetail = data.first
+                
+                state = .loaded
+            } catch {
+                state = .error(error.localizedDescription)
             }
         }
     }
