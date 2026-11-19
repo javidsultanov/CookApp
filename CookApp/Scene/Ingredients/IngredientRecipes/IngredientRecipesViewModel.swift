@@ -31,12 +31,23 @@ final class IngredientRecipesViewModel {
     func getIngredientRecipes() {
         state = .loading
         
-        manager.getIngredientRecipes(id: ingredient.id ?? 0) { data, errorMessage in
-            if let errorMessage {
-                self.state = .error(errorMessage)
-            } else if let data {
-                self.recipes = data
-                self.state = .loaded
+//        manager.getIngredientRecipes(id: ingredient.id ?? 0) { data, errorMessage in
+//            if let errorMessage {
+//                self.state = .error(errorMessage)
+//            } else if let data {
+//                self.recipes = data
+//                self.state = .loaded
+//            }
+//        }
+        
+        Task {
+            do {
+                let data = try await manager.getIngredientRecipes(id: ingredient.id ?? 0)
+                recipes = data
+                
+                state = .loaded
+            } catch {
+                state = .error(error.localizedDescription)
             }
         }
     }

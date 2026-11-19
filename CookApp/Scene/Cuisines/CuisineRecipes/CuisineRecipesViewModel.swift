@@ -31,15 +31,29 @@ final class CuisineRecipesViewModel {
     func getCuisineRecipes() {
         state = .loading
         
-        manager.getCuisineRecipes(id: cuisine.id ?? 0) { data, errorMessage in
-            if let errorMessage {
-                self.state = .error(errorMessage)
-            } else if let data {
-                self.sections = Difficulty.allCases.compactMap({ difficultyLevel in
+//        manager.getCuisineRecipes(id: cuisine.id ?? 0) { data, errorMessage in
+//            if let errorMessage {
+//                self.state = .error(errorMessage)
+//            } else if let data {
+//                self.sections = Difficulty.allCases.compactMap({ difficultyLevel in
+//                    let recipes = data.filter({ $0.difficulty == difficultyLevel.rawValue })
+//                    return recipes.isEmpty ? nil : DifficultySection(difficultyLevel: difficultyLevel, recipes: recipes)
+//                })
+//                self.state = .loaded
+//            }
+//        }
+        
+        Task {
+            do {
+                let data = try await manager.getCuisineRecipes(id: cuisine.id ?? 0)
+                sections = Difficulty.allCases.compactMap({ difficultyLevel in
                     let recipes = data.filter({ $0.difficulty == difficultyLevel.rawValue })
                     return recipes.isEmpty ? nil : DifficultySection(difficultyLevel: difficultyLevel, recipes: recipes)
                 })
-                self.state = .loaded
+                
+                state = .loaded
+            } catch {
+                state = .error(error.localizedDescription)
             }
         }
     }

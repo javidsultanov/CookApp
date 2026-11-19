@@ -24,7 +24,7 @@ class RecipesController: BaseController {
         collection.translatesAutoresizingMaskIntoConstraints = false
         return collection
     }()
-    
+        
     private let loadingView: UIActivityIndicatorView = {
         let view = UIActivityIndicatorView(style: .large)
         view.color = .atlasOrange
@@ -41,6 +41,7 @@ class RecipesController: BaseController {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
+        viewModel.getRecipes()
         collection.reloadData()
     }
     
@@ -68,8 +69,6 @@ class RecipesController: BaseController {
         viewModel.stateChanged = { [weak self] in
             self?.configureState()
         }
-        
-        viewModel.getRecipes()
     }
     
     override func configureState() {
@@ -128,12 +127,14 @@ extension RecipesController: CollectionConfiguration {
             return UICollectionReusableView()
         }
         
-        header.configure(data: viewModel.sections[indexPath.section])
+        header.configure(data: viewModel.sections[indexPath.section],
+                         hint: indexPath.section == 0 ?
+                         "Showing recipes from your favorite cuisines. Want more? Choose more cuisines in Settings." : nil )
         return header
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, referenceSizeForHeaderInSection section: Int) -> CGSize {
-        .init(width: collectionView.frame.width, height: 48)
+        .init(width: collectionView.frame.width, height: section == 0 ? 112 : 48)
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {

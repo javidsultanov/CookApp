@@ -17,7 +17,11 @@ class TabBarController: UITabBarController {
     }
     
     private func configureUI() {
-        let discoverView = UIHostingController(rootView: DiscoverView())
+        let discoverView = UIHostingController(rootView: DiscoverView(settingButtonAction: { [weak self] in
+            let settingsView = UIHostingController(rootView: SettingsView())
+            settingsView.hidesBottomBarWhenPushed = true
+            (self?.selectedViewController as? UINavigationController)?.pushViewController(settingsView, animated: true)
+        }))
         discoverView.navigationItem.title = "Discover"
         discoverView.tabBarItem = .init(title: "Discover",
                                         image: .init(systemName: "safari"),

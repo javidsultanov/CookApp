@@ -26,14 +26,27 @@ final class CuisinesViewModel {
     func getCuisines() {
         state = .loading
         
-        manager.getCuisines { data, errorMessage in
-            if let errorMessage {
-                self.state = .error(errorMessage)
-            } else if let data {
-                let favoriteCuisines = data.filter({ self.isFavorite(cuisine: $0) })
-                let otherCuisines = data.filter({ !self.isFavorite(cuisine: $0) })
-                self.cuisines = favoriteCuisines + otherCuisines
-                self.state = .loaded
+//        manager.getCuisines { data, errorMessage in
+//            if let errorMessage {
+//                self.state = .error(errorMessage)
+//            } else if let data {
+//                let favoriteCuisines = data.filter({ self.isFavorite(cuisine: $0) })
+//                let otherCuisines = data.filter({ !self.isFavorite(cuisine: $0) })
+//                self.cuisines = favoriteCuisines + otherCuisines
+//                self.state = .loaded
+//            }
+//        }
+        
+        Task {
+            do {
+                let data = try await manager.getCuisines()
+                let favoriteCuisines = data.filter({ isFavorite(cuisine: $0) })
+                let otherCuisines = data.filter({ !isFavorite(cuisine: $0) })
+                cuisines = favoriteCuisines + otherCuisines
+                
+                state = .loaded
+            } catch {
+                state = .error(error.localizedDescription)
             }
         }
     }

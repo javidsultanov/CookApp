@@ -9,11 +9,13 @@ import SwiftUI
 
 struct DiscoverView: View {
     
+    var settingButtonAction: (() -> Void)?
+        
     var body: some View {
         Text("Discover")
             .toolbar {
-                NavigationLink {
-                    SettingsView()
+                Button {
+                    settingButtonAction?()
                 } label: {
                     Image(systemName: "gearshape")
                 }

@@ -41,17 +41,27 @@ final class SettingViewModel {
         return "\(savedCount) saved recipes"
     }
     
-    func getCuisines() {
+    func getCuisines() async {
         state = .loading
         
-        manager.getCuisines { data, errorMessage in
-            if let errorMessage {
-                self.state = .error(errorMessage)
-                self.showError = true
-            } else if let data {
-                self.cuisines = data
-                self.state = .loaded
-            }
+//        manager.getCuisines { data, errorMessage in
+//            if let errorMessage {
+//                self.state = .error(errorMessage)
+//                self.showError = true
+//            } else if let data {
+//                self.cuisines = data
+//                self.state = .loaded
+//            }
+//        }
+        
+        do {
+            let data = try await manager.getCuisines()
+            cuisines = data
+            
+            state = .loaded
+        } catch {
+            state = .error(error.localizedDescription)
+            showError = true
         }
     }
     
