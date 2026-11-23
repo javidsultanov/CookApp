@@ -130,7 +130,6 @@ extension RecipesController: CollectionConfiguration {
         header.configure(data: viewModel.sections[indexPath.section],
                          hint: indexPath.section == 0 ?
                          "Showing recipes from your favorite cuisines. Want more? Choose more cuisines in Settings on Discover page." : nil )
-                         "Showing recipes from your favorite cuisines. Want more? Choose more cuisines in Settings." : nil )
         return header
     }
     

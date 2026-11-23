@@ -217,20 +217,6 @@ struct DiscoverView: View {
             }
             .scrollIndicators(.hidden)
         }
-
-struct DiscoverView: View {
-    
-    var settingButtonAction: (() -> Void)?
-        
-    var body: some View {
-        Text("Discover")
-            .toolbar {
-                Button {
-                    settingButtonAction?()
-                } label: {
-                    Image(systemName: "gearshape")
-                }
-            }
     }
 }
 
