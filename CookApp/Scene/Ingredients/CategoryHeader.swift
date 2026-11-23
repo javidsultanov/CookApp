@@ -58,6 +58,17 @@ class CategoryHeader: UICollectionReusableView {
 }
 
 extension CategoryHeader: CollectionConfiguration {
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        if selectedIndex == indexPath.item {
+            selectedIndex = nil
+        } else {
+            selectedIndex = indexPath.item
+        }
+        
+        collection.reloadData()
+        categoryCallback?(selectedIndex)
+    }
+    
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         categories.count
     }

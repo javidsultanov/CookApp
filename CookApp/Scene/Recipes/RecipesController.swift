@@ -8,15 +8,45 @@
 import UIKit
 
 class RecipesController: BaseController {
+    private lazy var collection: UICollectionView = {
+        let layout = UICollectionViewFlowLayout()
+        layout.minimumLineSpacing = 12
+        layout.sectionInset = .init(top: 0, left: 0, bottom: 16, right: 0)
+        
+        let collection = UICollectionView(frame: .zero, collectionViewLayout: layout)
+        collection.register(CuisineRecipesCell.self, forCellWithReuseIdentifier: "\(CuisineRecipesCell.self)")
+        collection.register(DifficultyHeader.self,
+                            forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader,
+                            withReuseIdentifier: "\(DifficultyHeader.self)")
+        collection.delegate = self
+        collection.dataSource = self
+        collection.backgroundColor = .clear
+        collection.translatesAutoresizingMaskIntoConstraints = false
+        return collection
+    }()
+        
+    private let loadingView: UIActivityIndicatorView = {
+        let view = UIActivityIndicatorView(style: .large)
+        view.color = .atlasOrange
+        view.hidesWhenStopped = true
+        view.translatesAutoresizingMaskIntoConstraints = false
+        return view
+    }()
+    
+    private let viewModel = RecipesViewModel()
 
     override func viewDidLoad() {
         super.viewDidLoad()
     }
     
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        viewModel.getRecipes()
+        collection.reloadData()
+    }
+    
     override func configureUI() {
         navigationItem.title = "Recipes"
-<<<<<<< Updated upstream
-=======
         view.backgroundColor = .atlasCream
     }
     
@@ -100,6 +130,7 @@ extension RecipesController: CollectionConfiguration {
         header.configure(data: viewModel.sections[indexPath.section],
                          hint: indexPath.section == 0 ?
                          "Showing recipes from your favorite cuisines. Want more? Choose more cuisines in Settings on Discover page." : nil )
+                         "Showing recipes from your favorite cuisines. Want more? Choose more cuisines in Settings." : nil )
         return header
     }
     
@@ -118,6 +149,5 @@ extension RecipesController: CollectionConfiguration {
         let coordinator = RecipeDetailCoordinator(navigationController: navigationController,
                                                   id: recipe.id ?? 0)
         coordinator.start()
->>>>>>> Stashed changes
     }
 }

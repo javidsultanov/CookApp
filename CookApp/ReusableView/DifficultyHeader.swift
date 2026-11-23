@@ -25,6 +25,7 @@ class DifficultyHeader: UICollectionReusableView {
     
     private lazy var hintLabel: UILabel = {
         let label = UILabel()
+        label.text = "Showing recipes from your favorite cuisines. Want more? Choose more cuisines in Settings."
         label.textColor = .atlasGray
         label.font = .systemFont(ofSize: 16, weight: .bold)
         label.numberOfLines = 0

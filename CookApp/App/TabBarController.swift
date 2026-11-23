@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import SwiftUI
 
 class TabBarController: UITabBarController {
 
@@ -16,13 +17,11 @@ class TabBarController: UITabBarController {
     }
     
     private func configureUI() {
-<<<<<<< Updated upstream
         let discoverController = DiscoverController()
         discoverController.tabBarItem = .init(title: "Discover",
                                               image: .init(systemName: "safari"),
                                               tag: 0)
         let discoverNavigation = UINavigationController(rootViewController: discoverController)
-=======
         let discoverView = UIHostingController(rootView: DiscoverView(settingsTapped: { [weak self] in
             let settingsView = UIHostingController(rootView: SettingsView())
             settingsView.hidesBottomBarWhenPushed = true
@@ -31,13 +30,16 @@ class TabBarController: UITabBarController {
             self?.openReccipeDetail(id: id)
         }, cuisineTapped: { [weak self] cuisine in
             self?.openCuisineRecipes(cuisine: cuisine)
+        let discoverView = UIHostingController(rootView: DiscoverView(settingButtonAction: { [weak self] in
+            let settingsView = UIHostingController(rootView: SettingsView())
+            settingsView.hidesBottomBarWhenPushed = true
+            (self?.selectedViewController as? UINavigationController)?.pushViewController(settingsView, animated: true)
         }))
         discoverView.navigationItem.title = "Discover"
         discoverView.tabBarItem = .init(title: "Discover",
                                         image: .init(systemName: "safari"),
                                         tag: 0)
         let discoverNavigation = UINavigationController(rootViewController: discoverView)
->>>>>>> Stashed changes
         
         let recipesController = RecipesController()
         recipesController.tabBarItem = .init(title: "Recipes",

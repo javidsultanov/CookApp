@@ -22,14 +22,19 @@ final class OnboardingViewModel {
                                     title: "Cook step by step",
                                     description: "Follow one clear step at a time, then rate how the dish turned out.")]
     
-    var success: (() -> Void)?
-    var error: ((String) -> Void)?
+    var stateChanged: (() -> Void)?
     
+    private(set) var state: ViewState = .idle {
+        didSet {
+            stateChanged?()
+        }
+    }
+
     var nextCallback: (() -> Void)?
     var finishCallback: (() -> Void)?
     
     var currentIndex = 0
-    let pageCount = 3
+    let pages = OnboardingPage.allCases
 
     init(manager: CuisineManagerUseCase = CuisineManager()) {
         self.manager = manager
@@ -37,18 +42,36 @@ final class OnboardingViewModel {
     }
     
     func getCuisines() {
-        manager.getCuisines { data, errorMessage in
-            if let errorMessage {
-                self.error?(errorMessage)
-            } else if let data {
-                self.cuisines = data
+        state = .loading
+        
+//        manager.getCuisines { data, errorMessage in
+//            if let errorMessage {
+//                self.state = .error(errorMessage)
+//            } else if let data {
+//                self.cuisines = data
+//                
+//                if self.selectedCuisineID.isEmpty,
+//                   let firstCuisine = self.cuisines.first {
+//                    self.selectedCuisineID.append(firstCuisine.id ?? 0)
+//                }
+//                
+//                self.state = .loaded
+//            }
+//        }
+        
+        Task {
+            do {
+                let data = try await manager.getCuisines()
+                cuisines = data
                 
-                if self.selectedCuisineID.isEmpty,
-                   let firstCuisine = self.cuisines.first {
-                    self.selectedCuisineID.append(firstCuisine.id ?? 0)
+                if selectedCuisineID.isEmpty,
+                   let firstCuisine = cuisines.first {
+                    selectedCuisineID.append(firstCuisine.id ?? 0)
                 }
                 
-                self.success?()
+                state = .loaded
+            } catch {
+                state = .error(error.localizedDescription)
             }
         }
     }
@@ -73,18 +96,18 @@ final class OnboardingViewModel {
     }
     
     var buttonText: String {
-        switch currentIndex {
-        case 0:
+        switch pages[currentIndex] {
+        case .welcome:
             return "Get Started"
-        case 1:
+        case .cuisines:
             return "Continue"
-        default:
+        case .journey:
             return "Explore CookAtlas"
         }
     }
     
     func nextPage() {
-        if currentIndex == pageCount - 1 {
+        if pages[currentIndex] == .journey {
             completeOnboarding()
         } else {
             currentIndex += 1
