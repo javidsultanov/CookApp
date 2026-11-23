@@ -18,6 +18,7 @@ final class RecipesViewModel {
     var sections: [DifficultySection] = []
     
     private let dataBaseManager = RecipeDataBaseManager()
+    private var loadedCuisinesID: [Int]?
     
     var stateChanged: (() -> Void)?
     
@@ -31,6 +32,9 @@ final class RecipesViewModel {
         if sections.isEmpty {
             state = .loading
         }
+        let cuisinesID = UserDefaultsHelper.shared.favoriteCuisinesID
+        guard cuisinesID != loadedCuisinesID else { return }
+        state = .loading
         
 //        manager.getRecipes(cuisinesID: UserDefaultsHelper.shared.favoriteCuisinesID) { data, errorMessage in
 //            if let errorMessage {
@@ -51,6 +55,7 @@ final class RecipesViewModel {
                     let recipes = data.filter({ $0.difficulty == difficultyLevel.rawValue })
                     return recipes.isEmpty ? nil : DifficultySection(difficultyLevel: difficultyLevel, recipes: recipes)
                 })
+                loadedCuisinesID = cuisinesID
                 
                 state = .loaded
             } catch {

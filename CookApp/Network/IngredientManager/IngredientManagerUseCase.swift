@@ -1,0 +1,15 @@
+//
+//  IngredientManagerUseCase.swift
+//  CookApp
+//
+//  Created by Javid Sultanov on 24.10.26.
+//
+
+import Foundation
+
+protocol IngredientManagerUseCase {
+//    func getIngredients(completion: @escaping(([Ingredient]?, String?) -> Void))
+    func getIngredients() async throws -> [Ingredient]
+//    func getIngredientRecipes(id: Int, completion: @escaping(([RecipeCard]?, String?) -> Void))
+    func getIngredientRecipes(id: Int) async throws -> [RecipeCard]
+}

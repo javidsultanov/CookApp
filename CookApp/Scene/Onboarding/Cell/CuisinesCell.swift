@@ -11,8 +11,8 @@ class CuisinesCell: UICollectionViewCell {
     private lazy var titleLabel: UILabel = {
         let label = UILabel()
         label.text = "Which cuisines do you love?"
-        label.textColor = UIColor(red: 42/255, green: 31/255, blue: 23/255, alpha: 1)
-        label.font = UIFont.systemFont(ofSize: 32, weight: .bold)
+        label.textColor = .atlasDark
+        label.font = .systemFont(ofSize: 32, weight: .bold)
         label.numberOfLines = 0
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
@@ -21,8 +21,8 @@ class CuisinesCell: UICollectionViewCell {
     private lazy var descriptionLabel: UILabel = {
         let label = UILabel()
         label.text = "Pick a few. We'll show recipes from them first. You can change this anytime in Settings."
-        label.textColor = UIColor(red: 110/255, green: 96/255, blue: 84/255, alpha: 1)
-        label.font = UIFont.systemFont(ofSize: 16, weight: .regular)
+        label.textColor = .atlasGray
+        label.font = .systemFont(ofSize: 16, weight: .regular)
         label.numberOfLines = 0
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
@@ -34,7 +34,7 @@ class CuisinesCell: UICollectionViewCell {
         layout.minimumInteritemSpacing = 12
         
         let collection = UICollectionView(frame: .zero, collectionViewLayout: layout)
-        collection.register(SelectCuisineCell.self, forCellWithReuseIdentifier: SelectCuisineCell.identifier)
+        collection.register(SelectCuisineCell.self, forCellWithReuseIdentifier: "\(SelectCuisineCell.self)")
         collection.delegate = self
         collection.dataSource = self
         collection.backgroundColor = .clear
@@ -45,8 +45,8 @@ class CuisinesCell: UICollectionViewCell {
     
     private lazy var countLabel: UILabel = {
         let label = UILabel()
-        label.textColor = UIColor(red: 110/255, green: 96/255, blue: 84/255, alpha: 1)
-        label.font = UIFont.systemFont(ofSize: 12, weight: .regular)
+        label.textColor = .atlasGray
+        label.font = .systemFont(ofSize: 12, weight: .regular)
         label.textAlignment = .center
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
@@ -56,9 +56,7 @@ class CuisinesCell: UICollectionViewCell {
     
     private var items: [Cuisine] = []
     private var selectedID: [Int] = []
-    
-    static let identifier = "CuisinesCell"
-    
+        
     override init(frame: CGRect) {
         super.init(frame: frame)
         
@@ -109,7 +107,7 @@ extension CuisinesCell: CollectionConfiguration {
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: SelectCuisineCell.identifier,
+        guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "\(SelectCuisineCell.self)",
                                                             for: indexPath) as? SelectCuisineCell else {
             return UICollectionViewCell()
         }

@@ -11,8 +11,8 @@ class JourneyCell: UICollectionViewCell {
     private lazy var titleLabel: UILabel = {
         let label = UILabel()
         label.text = "Your cooking journey"
-        label.textColor = UIColor(red: 42/255, green: 31/255, blue: 23/255, alpha: 1)
-        label.font = UIFont.systemFont(ofSize: 32, weight: .bold)
+        label.textColor = .atlasDark
+        label.font = .systemFont(ofSize: 32, weight: .bold)
         label.numberOfLines = 0
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
@@ -21,8 +21,8 @@ class JourneyCell: UICollectionViewCell {
     private lazy var descriptionLabel: UILabel = {
         let label = UILabel()
         label.text = "Everything you need from \"that looks good\" to \"I made it\"."
-        label.textColor = UIColor(red: 110/255, green: 96/255, blue: 84/255, alpha: 1)
-        label.font = UIFont.systemFont(ofSize: 16, weight: .regular)
+        label.textColor = .atlasGray
+        label.font = .systemFont(ofSize: 16, weight: .regular)
         label.numberOfLines = 0
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
@@ -33,7 +33,7 @@ class JourneyCell: UICollectionViewCell {
         layout.minimumLineSpacing = 12
         
         let collection = UICollectionView(frame: .zero, collectionViewLayout: layout)
-        collection.register(JourneyFeaturesCell.self, forCellWithReuseIdentifier: JourneyFeaturesCell.identifier)
+        collection.register(JourneyFeaturesCell.self, forCellWithReuseIdentifier: "\(JourneyFeaturesCell.self)")
         collection.delegate = self
         collection.dataSource = self
         collection.backgroundColor = .clear
@@ -46,10 +46,10 @@ class JourneyCell: UICollectionViewCell {
         label.text = """
             No account needed. Your data stays on this iPhone.
             
-            Developed by CC · (Cool Coding programs)
+            Developed by C.C. · (Cool Coding programs)
             """
-        label.textColor = UIColor(red: 110/255, green: 96/255, blue: 84/255, alpha: 1)
-        label.font = UIFont.systemFont(ofSize: 12, weight: .regular)
+        label.textColor = .atlasGray
+        label.font = .systemFont(ofSize: 12, weight: .regular)
         label.textAlignment = .center
         label.numberOfLines = 0
         label.translatesAutoresizingMaskIntoConstraints = false
@@ -57,9 +57,7 @@ class JourneyCell: UICollectionViewCell {
     }()
     
     private var features: [Feature] = []
-    
-    static let identifier = "JourneyCell"
-    
+        
     override init(frame: CGRect) {
         super.init(frame: frame)
         
@@ -109,7 +107,7 @@ extension JourneyCell: CollectionConfiguration {
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: JourneyFeaturesCell.identifier,
+        guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "\(JourneyFeaturesCell.self)",
                                                             for: indexPath) as? JourneyFeaturesCell else {
             return UICollectionViewCell()
         }
