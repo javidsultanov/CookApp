@@ -82,4 +82,15 @@ extension CategoryHeader: CollectionConfiguration {
         cell.configure(category: categories[indexPath.item], selected: indexPath.item == selectedIndex)
         return cell
     }
+    
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        if selectedIndex == indexPath.item {
+            selectedIndex = nil
+        } else {
+            selectedIndex = indexPath.item
+        }
+        
+        collection.reloadData()
+        categoryCallback?(selectedIndex)
+    }
 }

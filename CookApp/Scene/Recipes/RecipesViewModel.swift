@@ -29,6 +29,9 @@ final class RecipesViewModel {
     }
     
     func getRecipes() {
+        if sections.isEmpty {
+            state = .loading
+        }
         let cuisinesID = UserDefaultsHelper.shared.favoriteCuisinesID
         guard cuisinesID != loadedCuisinesID else { return }
         state = .loading
