@@ -10,7 +10,17 @@ import Foundation
 class CuisineManager: CuisineManagerUseCase {
     let manager = CoreManager()
     
+<<<<<<< Updated upstream
     func getCuisines(completion: @escaping ([Cuisine]?, String?) -> Void) {
         manager.request(model: [Cuisine].self, endpoint: CuisineEndpoint.cuisineList.path, completion: completion)
+=======
+//    func getCuisines(completion: @escaping ([Cuisine]?, String?) -> Void) {
+//        manager.request(model: [Cuisine].self, endpoint: CuisineEndpoint.cuisineList.path, completion: completion)
+//    }
+    
+    func getCuisines() async throws -> [Cuisine] {
+        try await manager.request(model: [Cuisine].self,
+                                  endpoint: CuisineEndpoint.cuisineList.path)
+>>>>>>> Stashed changes
     }
 }
