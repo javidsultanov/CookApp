@@ -10,14 +10,14 @@ import UIKit
 class CategoryCell: UICollectionViewCell {
     private lazy var categoryLabel: UILabel = {
         let label = UILabel()
-        label.font = UIFont.systemFont(ofSize: 12, weight: .bold)
+        label.apply(.captionBold)
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
         
     override init(frame: CGRect) {
         super.init(frame: frame)
-        contentView.layer.cornerRadius = 16
+        contentView.layer.cornerRadius = AppRadius.l
         
         configureConstraints()
     }

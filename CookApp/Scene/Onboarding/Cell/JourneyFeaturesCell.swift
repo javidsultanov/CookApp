@@ -26,16 +26,14 @@ class JourneyFeaturesCell: UICollectionViewCell {
     
     private var titleLabel: UILabel = {
         let label = UILabel()
-        label.textColor = .atlasDark
-        label.font = .systemFont(ofSize: 16, weight: .bold)
+        label.apply(.headline, color: .atlasDark)
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
     
     private lazy var descriptionLabel: UILabel = {
         let label = UILabel()
-        label.textColor = .atlasGray
-        label.font = .systemFont(ofSize: 12, weight: .regular)
+        label.apply(.caption, color: .atlasGray)
         label.numberOfLines = 0
         label.translatesAutoresizingMaskIntoConstraints = false
         return label

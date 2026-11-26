@@ -19,15 +19,14 @@ class SelectCuisineCell: UICollectionViewCell {
     
     private lazy var flagEmojiLabel: UILabel = {
         let label = UILabel()
-        label.font = .systemFont(ofSize: 12, weight: .regular)
+        label.apply(.caption)
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
     
     private lazy var nameLabel: UILabel = {
         let label = UILabel()
-        label.textColor = .atlasDark
-        label.font = .systemFont(ofSize: 16, weight: .bold)
+        label.apply(.headline, color: .atlasDark)
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()

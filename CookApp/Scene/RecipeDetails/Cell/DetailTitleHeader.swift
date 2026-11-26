@@ -10,16 +10,14 @@ import UIKit
 class DetailTitleHeader: UICollectionReusableView {
     private lazy var titleLabel: UILabel = {
         let label = UILabel()
-        label.font = .systemFont(ofSize: 20, weight: .bold)
-        label.textColor = .atlasDark
+        label.apply(.sectionTitle, color: .atlasDark)
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
     
     private lazy var countLabel: UILabel = {
         let label = UILabel()
-        label.font = .systemFont(ofSize: 12, weight: .regular)
-        label.textColor = .atlasGray
+        label.apply(.caption, color: .atlasGray)
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()

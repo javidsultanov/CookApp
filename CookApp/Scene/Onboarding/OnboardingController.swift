@@ -35,14 +35,9 @@ class OnboardingController: BaseController {
         return collection
     }()
     
-    private lazy var button: UIButton = {
-        let button = UIButton()
-        button.setTitleColor(.white, for: .normal)
-        button.titleLabel?.font = UIFont.systemFont(ofSize: 16, weight: .bold)
-        button.backgroundColor = .atlasOrange
-        button.layer.cornerRadius = 16
+    private lazy var button: AppButton = {
+        let button = AppButton(style: .primary)
         button.addTarget(self, action: #selector(buttonTapped), for: .touchUpInside)
-        button.translatesAutoresizingMaskIntoConstraints = false
         return button
     }()
     
@@ -81,7 +76,6 @@ class OnboardingController: BaseController {
             button.topAnchor.constraint(equalTo: collection.bottomAnchor, constant: 16),
             button.centerXAnchor.constraint(equalTo: view.centerXAnchor),
             button.widthAnchor.constraint(equalTo: view.widthAnchor, multiplier: 0.88),
-            button.heightAnchor.constraint(equalToConstant: 60),
             button.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -16),
             
             loadingView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
