@@ -22,7 +22,7 @@ class TabBarController: UITabBarController {
             settingsView.hidesBottomBarWhenPushed = true
             (self?.selectedViewController as? UINavigationController)?.pushViewController(settingsView, animated: true)
         }, recipeTapped: { [weak self] id in
-            self?.openReccipeDetail(id: id)
+            self?.openRecipeDetail(id: id)
         }, cuisineTapped: { [weak self] cuisine in
             self?.openCuisineRecipes(cuisine: cuisine)
         }))
@@ -59,7 +59,7 @@ class TabBarController: UITabBarController {
         viewControllers = [discoverNavigation, recipesNavigation, cuisinesNavigation, ingredientsNavigation, cookbookNavigation]
     }
     
-    private func openReccipeDetail(id: Int) {
+    private func openRecipeDetail(id: Int) {
         guard let navigationController = selectedViewController as? UINavigationController else { return }
         
         let coordinator = RecipeDetailCoordinator(navigationController: navigationController, id: id)

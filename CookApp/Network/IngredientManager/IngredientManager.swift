@@ -25,4 +25,8 @@ class IngredientManager: IngredientManagerUseCase {
     func getIngredientRecipes(id: Int) async throws -> [RecipeCard] {
         try await manager.request(model: [RecipeCard].self, endpoint: IngredientEndpoint.ingredientRecipes(id: id).path)
     }
+    
+    func getRecipesWithIngredients(ids: [Int]) async throws -> [RecipeCard] {
+        try await manager.request(model: [RecipeCard].self, endpoint: IngredientEndpoint.recipeWithIngredients(ids: ids).path)
+    }
 }
