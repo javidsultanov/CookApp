@@ -17,8 +17,7 @@ class IngredientsCell: UICollectionViewCell {
     
     private lazy var titleLabel: UILabel = {
         let label = UILabel()
-        label.font = UIFont.systemFont(ofSize: 12, weight: .bold)
-        label.textColor = .atlasDark
+        label.apply(.captionBold, color: .atlasDark)
         label.textAlignment = .center
         label.numberOfLines = 0
         label.translatesAutoresizingMaskIntoConstraints = false
@@ -27,8 +26,7 @@ class IngredientsCell: UICollectionViewCell {
     
     private lazy var countLabel: UILabel = {
         let label = UILabel()
-        label.font = UIFont.systemFont(ofSize: 16, weight: .regular)
-        label.textColor = .atlasGray
+        label.apply(.body, color: .atlasGray)
         label.textAlignment = .center
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
@@ -42,8 +40,7 @@ class IngredientsCell: UICollectionViewCell {
     }
     
     private func configureCell() {
-        contentView.backgroundColor = .white
-        contentView.layer.cornerRadius = 20
+        contentView.applyCardStyle()
     }
     
     private func configureConstraints() {
