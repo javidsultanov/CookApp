@@ -20,16 +20,14 @@ class RecipeIngredientsCell: UICollectionViewCell {
     
     private lazy var nameLabel: UILabel = {
         let label = UILabel()
-        label.font = .systemFont(ofSize: 12, weight: .bold)
-        label.textColor = .atlasDark
+        label.apply(.captionBold, color: .atlasDark)
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
     
     private lazy var amountLabel: UILabel = {
         let label = UILabel()
-        label.font = .systemFont(ofSize: 12, weight: .regular)
-        label.textColor = .atlasGray
+        label.apply(.caption, color: .atlasGray)
         label.textAlignment = .right
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
@@ -43,8 +41,7 @@ class RecipeIngredientsCell: UICollectionViewCell {
     }
     
     private func configureCell() {
-        contentView.backgroundColor = .white
-        contentView.layer.cornerRadius = 16
+        contentView.applyCardStyle(radius: AppRadius.l)
     }
     
     private func configureConstraints() {

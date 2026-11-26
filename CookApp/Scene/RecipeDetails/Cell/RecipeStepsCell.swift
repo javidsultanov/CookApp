@@ -10,8 +10,7 @@ import UIKit
 class RecipeStepsCell: UICollectionViewCell {
     private lazy var stepLabel: UILabel = {
         let label = UILabel()
-        label.font = .systemFont(ofSize: 16, weight: .regular)
-        label.textColor = .atlasDark
+        label.apply(.body, color: .atlasDark)
         label.numberOfLines = 0
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
@@ -25,8 +24,7 @@ class RecipeStepsCell: UICollectionViewCell {
     }
     
     private func configureCell() {
-        contentView.backgroundColor = .white
-        contentView.layer.cornerRadius = 16
+        contentView.applyCardStyle(radius: AppRadius.l)
     }
     
     private func configureConstraints() {

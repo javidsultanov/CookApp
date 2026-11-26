@@ -11,8 +11,7 @@ class JourneyCell: UICollectionViewCell {
     private lazy var titleLabel: UILabel = {
         let label = UILabel()
         label.text = "Your cooking journey"
-        label.textColor = .atlasDark
-        label.font = .systemFont(ofSize: 32, weight: .bold)
+        label.apply(.largeTitle, color: .atlasDark)
         label.numberOfLines = 0
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
@@ -21,8 +20,7 @@ class JourneyCell: UICollectionViewCell {
     private lazy var descriptionLabel: UILabel = {
         let label = UILabel()
         label.text = "Everything you need from \"that looks good\" to \"I made it\"."
-        label.textColor = .atlasGray
-        label.font = .systemFont(ofSize: 16, weight: .regular)
+        label.apply(.body, color: .atlasGray)
         label.numberOfLines = 0
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
@@ -46,10 +44,9 @@ class JourneyCell: UICollectionViewCell {
         label.text = """
             No account needed. Your data stays on this iPhone.
             
-            Developed by C.C. · (Cool Coding programs)
+            Developed by C.C. · Cool Coding programs
             """
-        label.textColor = .atlasGray
-        label.font = .systemFont(ofSize: 12, weight: .regular)
+        label.apply(.caption, color: .atlasGray)
         label.textAlignment = .center
         label.numberOfLines = 0
         label.translatesAutoresizingMaskIntoConstraints = false

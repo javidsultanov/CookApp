@@ -10,15 +10,14 @@ import UIKit
 class DifficultyHeader: UICollectionReusableView {
     private lazy var titleLabel: UILabel = {
         let label = UILabel()
-        label.font = UIFont.systemFont(ofSize: 20, weight: .bold)
+        label.apply(.sectionTitle)
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
     
     private lazy var countLabel: UILabel = {
         let label = UILabel()
-        label.font = UIFont.systemFont(ofSize: 12, weight: .regular)
-        label.textColor = .atlasGray
+        label.apply(.caption, color: .atlasGray)
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
@@ -26,8 +25,7 @@ class DifficultyHeader: UICollectionReusableView {
     private lazy var hintLabel: UILabel = {
         let label = UILabel()
         label.text = "Showing recipes from your favorite cuisines. Want more? Choose more cuisines in Settings."
-        label.textColor = .atlasGray
-        label.font = .systemFont(ofSize: 16, weight: .bold)
+        label.apply(.headline, color: .atlasGray)
         label.numberOfLines = 0
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
