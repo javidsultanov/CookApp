@@ -163,7 +163,7 @@ struct DiscoverView: View {
                         viewModel.newRecommendedRecipes()
                     }
                 } label: {
-                    Label("New", systemImage: "arrow.clockwise")
+                    Label("Refresh", systemImage: "arrow.clockwise")
                         .font(.subheadline.bold())
                         .foregroundStyle(.blue)
                 }
