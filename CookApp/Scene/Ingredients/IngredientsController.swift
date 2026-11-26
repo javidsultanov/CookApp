@@ -53,6 +53,11 @@ class IngredientsController: BaseController {
         navigationItem.title = "Ingredients"
         view.backgroundColor = .atlasCream
         
+        navigationItem.rightBarButtonItem = UIBarButtonItem(title: "AIHelp",
+                                                            style: .plain,
+                                                            target: self,
+                                                            action: #selector(helpTapped))
+        
         let tap = UITapGestureRecognizer(target: self, action: #selector(dismissKeyboard))
         tap.cancelsTouchesInView = false
         view.addGestureRecognizer(tap)
@@ -112,6 +117,13 @@ class IngredientsController: BaseController {
     
     @objc private func dismissKeyboard() {
         view.endEditing(true)
+    }
+    
+    @objc private func helpTapped() {
+        guard let navigationController = self.navigationController else { return }
+        
+        let coordinator = AIHelpCoordinator(navigationController: navigationController)
+        coordinator.start()
     }
 }
 

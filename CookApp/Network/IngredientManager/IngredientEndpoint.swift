@@ -10,6 +10,7 @@ import Foundation
 enum IngredientEndpoint {
     case ingredientList
     case ingredientRecipes(id: Int)
+    case recipeWithIngredients(ids: [Int])
     
     var path: String {
         switch self {
@@ -17,6 +18,9 @@ enum IngredientEndpoint {
             return CoreHelper.shared.configureURL(endpoint: "ingredient_list?order=name")
         case .ingredientRecipes(let id):
             return CoreHelper.shared.configureURL(endpoint: "ingredient_recipes?ingredient_id=eq.\(id)&order=difficulty_level,title")
+        case .recipeWithIngredients(ids: let ids):
+            let idsText = ids.map({ "\($0)" }).joined(separator: ",")
+            return CoreHelper.shared.configureURL(endpoint: "ingredient_recipes?ingredient_id=in.(\(idsText))")
         }
     }
 }
