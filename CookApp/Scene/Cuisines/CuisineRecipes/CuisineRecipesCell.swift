@@ -20,8 +20,7 @@ class CuisineRecipesCell: UICollectionViewCell {
     
     private lazy var titleLabel: UILabel = {
         let label = UILabel()
-        label.textColor = .atlasDark
-        label.font = UIFont.systemFont(ofSize: 16, weight: .bold)
+        label.apply(.headline, color: .atlasDark)
         label.numberOfLines = 0
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
@@ -29,8 +28,7 @@ class CuisineRecipesCell: UICollectionViewCell {
     
     private lazy var infoLabel: UILabel = {
         let label = UILabel()
-        label.textColor = .atlasGray
-        label.font = UIFont.systemFont(ofSize: 12, weight: .regular)
+        label.apply(.caption, color: .atlasGray)
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
@@ -57,8 +55,7 @@ class CuisineRecipesCell: UICollectionViewCell {
     }
     
     private func configureCell() {
-        contentView.backgroundColor = .white
-        contentView.layer.cornerRadius = 20
+        contentView.applyCardStyle()
     }
     
     private func configureConstraints() {

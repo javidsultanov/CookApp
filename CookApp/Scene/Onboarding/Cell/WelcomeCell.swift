@@ -43,8 +43,7 @@ class WelcomeCell: UICollectionViewCell {
     private lazy var subTitleLabel: UILabel = {
         let label = UILabel()
         label.text = "WORLD CUISINES & RECIPES"
-        label.textColor = .atlasOrange
-        label.font = .systemFont(ofSize: 12, weight: .bold)
+        label.apply(.captionBold, color: .atlasOrange)
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
@@ -52,8 +51,7 @@ class WelcomeCell: UICollectionViewCell {
     private lazy var descriptionLabel: UILabel = {
         let label = UILabel()
         label.text = "Saw a dish you'd love to try? Find the recipe, check the ingredients and cook it at home, step by step."
-        label.textColor = .atlasGray
-        label.font = .systemFont(ofSize: 16, weight: .regular)
+        label.apply(.body, color: .atlasGray)
         label.numberOfLines = 0
         label.translatesAutoresizingMaskIntoConstraints = false
         return label

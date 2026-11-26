@@ -20,8 +20,7 @@ class CuisineCardCell: UICollectionViewCell {
     private lazy var favoriteLabel: UILabel = {
         let label = UILabel()
         label.text = "❣️Favorite "
-        label.textColor = .atlasOrange
-        label.font = UIFont.systemFont(ofSize: 12, weight: .bold)
+        label.apply(.captionBold, color: .atlasOrange)
         label.backgroundColor = .white
         label.layer.cornerRadius = 8
         label.clipsToBounds = true
@@ -31,16 +30,14 @@ class CuisineCardCell: UICollectionViewCell {
     
     private lazy var nameLabel: UILabel = {
         let label = UILabel()
-        label.textColor = .atlasDark
-        label.font = UIFont.systemFont(ofSize: 16, weight: .bold)
+        label.apply(.headline, color: .atlasDark)
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
     
     private lazy var infoLabel: UILabel = {
         let label = UILabel()
-        label.textColor = .atlasGray
-        label.font = UIFont.systemFont(ofSize: 16, weight: .regular)
+        label.apply(.body, color: .atlasGray)
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
@@ -53,9 +50,7 @@ class CuisineCardCell: UICollectionViewCell {
     }
     
     private func configureCell() {
-        contentView.backgroundColor = .white
-        contentView.layer.cornerRadius = 20
-        contentView.clipsToBounds = true
+        contentView.applyCardStyle()
     }
     
     private func configureConstraints() {

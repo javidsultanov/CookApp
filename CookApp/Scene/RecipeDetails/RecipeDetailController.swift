@@ -30,16 +30,9 @@ class RecipeDetailController: BaseController {
         return collection
     }()
     
-    private lazy var youtubeButton: UIButton = {
-        let button = UIButton()
-        button.setTitle("Watch on YouTube", for: .normal)
-        button.setImage(UIImage(systemName: "play.rectangle.fill"), for: .normal)
-        button.tintColor = .white
-        button.titleLabel?.font = UIFont.systemFont(ofSize: 16, weight: .bold)
-        button.backgroundColor = .atlasOrange
-        button.layer.cornerRadius = 16
+    private lazy var youtubeButton: AppButton = {
+        let button = AppButton(title: "Watch on Youtube", systemImage: "play.rectangle.fill")
         button.addTarget(self, action: #selector(youtubeButtonTapped), for: .touchUpInside)
-        button.translatesAutoresizingMaskIntoConstraints = false
         return button
     }()
     
@@ -96,7 +89,6 @@ class RecipeDetailController: BaseController {
             youtubeButton.leadingAnchor.constraint(equalTo: collection.leadingAnchor),
             youtubeButton.trailingAnchor.constraint(equalTo: collection.trailingAnchor),
             youtubeButton.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor),
-            youtubeButton.heightAnchor.constraint(equalToConstant: 52),
             
             loadingView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
             loadingView.centerYAnchor.constraint(equalTo: view.centerYAnchor)
