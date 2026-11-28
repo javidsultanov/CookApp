@@ -10,7 +10,7 @@ import UIKit
 class DifficultyHeader: UICollectionReusableView {
     private lazy var titleLabel: UILabel = {
         let label = UILabel()
-        label.apply(.sectionTitle)
+        label.apply(.sectionTitle, color: .atlasDark)
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()

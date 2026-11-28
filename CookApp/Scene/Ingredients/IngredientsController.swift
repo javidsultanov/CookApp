@@ -35,14 +35,6 @@ class IngredientsController: BaseController {
         return collection
     }()
     
-    private let loadingView: UIActivityIndicatorView = {
-        let view = UIActivityIndicatorView(style: .large)
-        view.color = .atlasOrange
-        view.hidesWhenStopped = true
-        view.translatesAutoresizingMaskIntoConstraints = false
-        return view
-    }()
-    
     private let viewModel = IngredientsViewModel()
 
     override func viewDidLoad() {
@@ -66,7 +58,6 @@ class IngredientsController: BaseController {
     override func configureConstraints() {
         view.addSubview(searchBar)
         view.addSubview(collection)
-        view.addSubview(loadingView)
         
         NSLayoutConstraint.activate([
             searchBar.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
@@ -76,10 +67,7 @@ class IngredientsController: BaseController {
             collection.topAnchor.constraint(equalTo: searchBar.bottomAnchor, constant: 4),
             collection.centerXAnchor.constraint(equalTo: view.centerXAnchor),
             collection.widthAnchor.constraint(equalTo: view.widthAnchor, multiplier: 0.96),
-            collection.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor),
-            
-            loadingView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-            loadingView.centerYAnchor.constraint(equalTo: view.centerYAnchor)
+            collection.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor)
         ])
     }
     
@@ -104,15 +92,6 @@ class IngredientsController: BaseController {
             stopLoading()
             showDefaultAlert(title: "Error", message: errorMessage)
         }
-    }
-    
-    override func startLoading() {
-        view.bringSubviewToFront(loadingView)
-        loadingView.startAnimating()
-    }
-    
-    override func stopLoading() {
-        loadingView.stopAnimating()
     }
     
     @objc private func dismissKeyboard() {

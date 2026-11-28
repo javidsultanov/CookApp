@@ -94,12 +94,12 @@ class CuisineRecipesCell: UICollectionViewCell {
         }
     }
     
-    func configureSaved(entity: RecipeEntity) {
+    func configureSaved(recipe: SavedRecipe) {
         recipeImageView.image = nil
-        recipeImageView.loadImage(url: entity.recipeImage ?? "")
+        recipeImageView.loadImage(url: recipe.imageURL ?? "")
         
-        titleLabel.text = entity.recipeTitle
-        infoLabel.text = "\(entity.recipeFlag ?? "") \(entity.cuisineTitle ?? "") · \(entity.recipeMinutes) minutes"
+        titleLabel.text = recipe.title
+        infoLabel.text = "\(recipe.flagEmoji ?? "") \(recipe.cuisineName ?? "") · \(recipe.cookTimeMinutes ?? 0) minutes"
     }
     
     func configureSaveButton(isSaved: Bool) {

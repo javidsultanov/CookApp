@@ -56,9 +56,9 @@ final class AIHelpViewModel {
             
             let names = try await aiManager.handleIngredients(text: text, catalog: catalog)
             sampleNames = names
-            let lowerNames = names.map({ $0.lowercased() })
+            let finalNames = names.map({ $0.lowercased() })
             
-            let ids = ingredients.filter({ lowerNames.contains(($0.name ?? "").lowercased()) }).compactMap({ $0.id })
+            let ids = ingredients.filter({ finalNames.contains(($0.name ?? "").lowercased()) }).compactMap({ $0.id })
             guard !ids.isEmpty else {
                 resultState = .loaded
                 return

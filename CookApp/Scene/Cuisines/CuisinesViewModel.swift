@@ -11,6 +11,8 @@ final class CuisinesViewModel {
     var manager: CuisineManagerUseCase
     var cuisines: [Cuisine] = []
     
+    var allCuisines: [Cuisine] = []
+    
     init(manager: CuisineManagerUseCase = CuisineManager()) {
         self.manager = manager
     }
@@ -26,29 +28,23 @@ final class CuisinesViewModel {
     func getCuisines() {
         state = .loading
         
-//        manager.getCuisines { data, errorMessage in
-//            if let errorMessage {
-//                self.state = .error(errorMessage)
-//            } else if let data {
-//                let favoriteCuisines = data.filter({ self.isFavorite(cuisine: $0) })
-//                let otherCuisines = data.filter({ !self.isFavorite(cuisine: $0) })
-//                self.cuisines = favoriteCuisines + otherCuisines
-//                self.state = .loaded
-//            }
-//        }
-        
         Task {
             do {
                 let data = try await manager.getCuisines()
-                let favoriteCuisines = data.filter({ isFavorite(cuisine: $0) })
-                let otherCuisines = data.filter({ !isFavorite(cuisine: $0) })
-                cuisines = favoriteCuisines + otherCuisines
+                allCuisines = data
+                sortCuisines()
                 
                 state = .loaded
             } catch {
                 state = .error(error.localizedDescription)
             }
         }
+    }
+    
+    func sortCuisines() {
+        let favoriteCuisines = allCuisines.filter({ isFavorite(cuisine: $0) })
+        let otherCuisines = allCuisines.filter({ !isFavorite(cuisine: $0) })
+        cuisines = favoriteCuisines + otherCuisines
     }
     
     func isFavorite(cuisine: Cuisine) -> Bool {

@@ -7,7 +7,6 @@
 
 import Foundation
 import UIKit
-import SwiftUI
 
 enum AppFont {
     case largeTitle
@@ -39,13 +38,7 @@ enum AppFont {
         }
     }
 
-    // UIKit
     var uiFont: UIFont {
         .systemFont(ofSize: size, weight: weight)
-    }
-
-    // SwiftUI
-    var font: Font {
-        Font(uiFont as CTFont)
     }
 }

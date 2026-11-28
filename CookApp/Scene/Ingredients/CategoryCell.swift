@@ -10,7 +10,7 @@ import UIKit
 class CategoryCell: UICollectionViewCell {
     private lazy var categoryLabel: UILabel = {
         let label = UILabel()
-        label.apply(.captionBold)
+        label.apply(.captionBold, color: .atlasDark)
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
