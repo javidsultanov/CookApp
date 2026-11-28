@@ -35,7 +35,7 @@ class RecipeInfoHeader: UICollectionReusableView {
     
     private lazy var difficultyLabel: UILabel = {
         let label = UILabel()
-        label.apply(.headline)
+        label.apply(.headline, color: .atlasDark)
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()

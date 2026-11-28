@@ -41,14 +41,6 @@ class OnboardingController: BaseController {
         return button
     }()
     
-    private let loadingView: UIActivityIndicatorView = {
-        let view = UIActivityIndicatorView(style: .large)
-        view.color = .atlasOrange
-        view.hidesWhenStopped = true
-        view.translatesAutoresizingMaskIntoConstraints = false
-        return view
-    }()
-    
     private let viewModel = OnboardingViewModel()
     
     override func viewDidLoad() {
@@ -63,7 +55,6 @@ class OnboardingController: BaseController {
         view.addSubview(pageControl)
         view.addSubview(collection)
         view.addSubview(button)
-        view.addSubview(loadingView)
         
         NSLayoutConstraint.activate([
             pageControl.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 8),
@@ -76,10 +67,7 @@ class OnboardingController: BaseController {
             button.topAnchor.constraint(equalTo: collection.bottomAnchor, constant: 16),
             button.centerXAnchor.constraint(equalTo: view.centerXAnchor),
             button.widthAnchor.constraint(equalTo: view.widthAnchor, multiplier: 0.88),
-            button.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -16),
-            
-            loadingView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-            loadingView.centerYAnchor.constraint(equalTo: view.centerYAnchor)
+            button.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -16)
         ])
     }
     
@@ -117,15 +105,6 @@ class OnboardingController: BaseController {
             stopLoading()
             showDefaultAlert(title: "Error", message: errorMessage)
         }
-    }
-    
-    override func startLoading() {
-        view.bringSubviewToFront(loadingView)
-        loadingView.startAnimating()
-    }
-    
-    override func stopLoading() {
-        loadingView.stopAnimating()
     }
     
     private func configureOnboading() {

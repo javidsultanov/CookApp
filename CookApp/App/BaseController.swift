@@ -8,6 +8,7 @@
 import UIKit
 
 class BaseController: UIViewController {
+    let loadingView = UIActivityIndicatorView.loadingView()
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -23,9 +24,15 @@ class BaseController: UIViewController {
     
     func configureViewModel() {}
     
-    func startLoading() {}
+    func startLoading() {
+        view.addSubview(loadingView)
+        loadingView.center = CGPoint(x: view.bounds.midX, y: view.bounds.midY)
+        loadingView.startAnimating()
+    }
     
-    func stopLoading() {}
+    func stopLoading() {
+        loadingView.stopAnimating()
+    }
     
     func configureState() {}
 }

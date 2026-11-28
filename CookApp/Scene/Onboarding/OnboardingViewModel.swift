@@ -10,7 +10,7 @@ import Foundation
 final class OnboardingViewModel {
     var manager: CuisineManagerUseCase
     var cuisines: [Cuisine] = []
-    var selectedCuisineID: [Int]
+    var selectedCuisineID: [Int] = []
     
     let feauter: [Feature] = [.init(image: "bookmark.fill",
                                     title: "Save recipes you like",
@@ -20,7 +20,7 @@ final class OnboardingViewModel {
                                     description: "Pick an ingredient, like eggs or chicken, and see every recipe that uses it."),
                               .init(image: "stairs",
                                     title: "Cook step by step",
-                                    description: "Follow one clear step at a time, then rate how the dish turned out.")]
+                                    description: "Follow clear numbered steps and watch the dish on YouTube.")]
     
     var stateChanged: (() -> Void)?
     
@@ -38,27 +38,11 @@ final class OnboardingViewModel {
 
     init(manager: CuisineManagerUseCase = CuisineManager()) {
         self.manager = manager
-        self.selectedCuisineID = UserDefaultsHelper.shared.favoriteCuisinesID
     }
     
     func getCuisines() {
         state = .loading
-        
-//        manager.getCuisines { data, errorMessage in
-//            if let errorMessage {
-//                self.state = .error(errorMessage)
-//            } else if let data {
-//                self.cuisines = data
-//                
-//                if self.selectedCuisineID.isEmpty,
-//                   let firstCuisine = self.cuisines.first {
-//                    self.selectedCuisineID.append(firstCuisine.id ?? 0)
-//                }
-//                
-//                self.state = .loaded
-//            }
-//        }
-        
+                
         Task {
             do {
                 let data = try await manager.getCuisines()

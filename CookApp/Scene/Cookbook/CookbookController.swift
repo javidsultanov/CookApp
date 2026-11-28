@@ -22,14 +22,6 @@ class CookbookController: BaseController {
         return collection
     }()
     
-    private let loadingView: UIActivityIndicatorView = {
-        let view = UIActivityIndicatorView(style: .large)
-        view.color = .atlasOrange
-        view.hidesWhenStopped = true
-        view.translatesAutoresizingMaskIntoConstraints = false
-        return view
-    }()
-    
     private let viewModel = CookbookViewModel()
     
     private let refreshControl = UIRefreshControl()
@@ -53,26 +45,13 @@ class CookbookController: BaseController {
     
     override func configureConstraints() {
         view.addSubview(collection)
-        view.addSubview(loadingView)
         
         NSLayoutConstraint.activate([
             collection.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
             collection.centerXAnchor.constraint(equalTo: view.centerXAnchor),
             collection.widthAnchor.constraint(equalTo: view.widthAnchor, multiplier: 0.96),
-            collection.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor),
-            
-            loadingView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-            loadingView.centerYAnchor.constraint(equalTo: view.centerYAnchor)
+            collection.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor)
         ])
-    }
-    
-    override func startLoading() {
-        view.bringSubviewToFront(loadingView)
-        loadingView.startAnimating()
-    }
-    
-    override func stopLoading() {
-        loadingView.stopAnimating()
     }
     
     override func configureViewModel() {
@@ -121,9 +100,11 @@ extension CookbookController: CollectionConfiguration {
         
         let recipe = viewModel.recipes[indexPath.item]
         cell.configureSaveButton(isSaved: true)
-        cell.configureSaved(entity: recipe)
+        cell.configureSaved(recipe: recipe)
         cell.saveCallback = { [weak self] in
-            self?.viewModel.deleteRecipes(recipeID: Int(recipe.recipeID))
+            if let id = recipe.id {
+                self?.viewModel.deleteRecipes(recipeID: id)
+            }
         }
         return cell
     }
@@ -133,11 +114,12 @@ extension CookbookController: CollectionConfiguration {
     }
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        guard let navigationController = self.navigationController else { return }
-        
         let recipe = viewModel.recipes[indexPath.item]
-        let coordinator = RecipeDetailCoordinator(navigationController: navigationController,
-                                                  id: Int(recipe.recipeID))
-        coordinator.start()
+        
+        if let navigationController,
+           let id = recipe.id {
+            let coordinator = RecipeDetailCoordinator(navigationController: navigationController, id: id)
+            coordinator.start()
+        }
     }
 }

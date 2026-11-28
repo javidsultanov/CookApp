@@ -41,14 +41,6 @@ class RecipeDetailController: BaseController {
                                                   target: self,
                                                   action: #selector(saveButtonTapped))
     
-    private let loadingView: UIActivityIndicatorView = {
-        let view = UIActivityIndicatorView(style: .large)
-        view.color = .atlasOrange
-        view.hidesWhenStopped = true
-        view.translatesAutoresizingMaskIntoConstraints = false
-        return view
-    }()
-    
     private let viewModel: RecipeDetailViewModel
     
     init(viewModel: RecipeDetailViewModel) {
@@ -78,7 +70,6 @@ class RecipeDetailController: BaseController {
     override func configureConstraints() {
         view.addSubview(collection)
         view.addSubview(youtubeButton)
-        view.addSubview(loadingView)
         
         NSLayoutConstraint.activate([
             collection.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
@@ -88,10 +79,7 @@ class RecipeDetailController: BaseController {
             
             youtubeButton.leadingAnchor.constraint(equalTo: collection.leadingAnchor),
             youtubeButton.trailingAnchor.constraint(equalTo: collection.trailingAnchor),
-            youtubeButton.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor),
-            
-            loadingView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-            loadingView.centerYAnchor.constraint(equalTo: view.centerYAnchor)
+            youtubeButton.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor)
         ])
     }
         
@@ -119,16 +107,7 @@ class RecipeDetailController: BaseController {
             showDefaultAlert(title: "Error", message: errorMessage)
         }
     }
-    
-    override func startLoading() {
-        view.bringSubviewToFront(loadingView)
-        loadingView.startAnimating()
-    }
-    
-    override func stopLoading() {
-        loadingView.stopAnimating()
-    }
-    
+        
     @objc private func youtubeButtonTapped() {
         guard let url = viewModel.youtubeLink else { return }
         

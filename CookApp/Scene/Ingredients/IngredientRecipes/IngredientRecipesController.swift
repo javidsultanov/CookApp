@@ -21,14 +21,6 @@ class IngredientRecipesController: BaseController {
         collection.translatesAutoresizingMaskIntoConstraints = false
         return collection
     }()
-    
-    private let loadingView: UIActivityIndicatorView = {
-        let view = UIActivityIndicatorView(style: .large)
-        view.color = .atlasOrange
-        view.hidesWhenStopped = true
-        view.translatesAutoresizingMaskIntoConstraints = false
-        return view
-    }()
         
     private let viewModel: IngredientRecipesViewModel
     
@@ -53,16 +45,12 @@ class IngredientRecipesController: BaseController {
     
     override func configureConstraints() {
         view.addSubview(collection)
-        view.addSubview(loadingView)
         
         NSLayoutConstraint.activate([
             collection.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
             collection.centerXAnchor.constraint(equalTo: view.centerXAnchor),
             collection.widthAnchor.constraint(equalTo: view.widthAnchor, multiplier: 0.96),
-            collection.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor),
-            
-            loadingView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-            loadingView.centerYAnchor.constraint(equalTo: view.centerYAnchor)
+            collection.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor)
         ])
     }
     
@@ -88,16 +76,7 @@ class IngredientRecipesController: BaseController {
             showDefaultAlert(title: "Error", message: errorMessage)
         }
     }
-    
-    override func startLoading() {
-        view.bringSubviewToFront(loadingView)
-        loadingView.startAnimating()
-    }
-    
-    override func stopLoading() {
-        loadingView.stopAnimating()
-    }
-    
+        
     @MainActor required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }

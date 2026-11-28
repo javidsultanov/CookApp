@@ -9,7 +9,7 @@ import Foundation
 import UIKit
 
 extension UILabel {
-    func apply(_ font: AppFont, color: UIColor = .atlasDark) {
+    func apply(_ font: AppFont, color: UIColor) {
         self.font = font.uiFont
         textColor = color
     }

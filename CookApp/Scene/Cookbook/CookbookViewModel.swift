@@ -8,7 +8,7 @@
 import Foundation
 
 final class CookbookViewModel {
-    var recipes: [RecipeEntity] = []
+    var recipes: [SavedRecipe] = []
     
     private let manager = RecipeDataBaseManager()
     
@@ -36,7 +36,7 @@ final class CookbookViewModel {
     
     private func configureDataBaseManager() {
         manager.deleteCallback = { recipeID in
-            self.recipes.removeAll(where: { Int($0.recipeID) == recipeID })
+            self.recipes.removeAll(where: { $0.id == recipeID })
             self.stateChanged?()
         }
         

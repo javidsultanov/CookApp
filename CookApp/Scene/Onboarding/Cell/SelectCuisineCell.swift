@@ -19,7 +19,7 @@ class SelectCuisineCell: UICollectionViewCell {
     
     private lazy var flagEmojiLabel: UILabel = {
         let label = UILabel()
-        label.apply(.caption)
+        label.apply(.caption, color: .atlasDark)
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()

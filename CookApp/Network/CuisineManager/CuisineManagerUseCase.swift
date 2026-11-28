@@ -8,6 +8,5 @@
 import Foundation
 
 protocol CuisineManagerUseCase {
-//    func getCuisines(completion: @escaping ([Cuisine]?, String?) -> Void)
     func getCuisines() async throws -> [Cuisine]
 }
